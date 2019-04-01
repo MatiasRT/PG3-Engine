@@ -1,0 +1,32 @@
+﻿  Window.cpp
+c:\users\administrador\desktop\pg2-engine\engine\enginedll\window.cpp(6): warning C4273: 'Window::Window': vinculación de DLL incoherente
+  c:\users\administrador\desktop\pg2-engine\engine\enginedll\window.h(11): note: vea la definición anterior de '{ctor}'
+c:\users\administrador\desktop\pg2-engine\engine\enginedll\window.cpp(10): warning C4273: 'Window::~Window': vinculación de DLL incoherente
+  c:\users\administrador\desktop\pg2-engine\engine\enginedll\window.h(12): note: vea la definición anterior de '{dtor}'
+c:\users\administrador\desktop\pg2-engine\engine\enginedll\window.cpp(12): warning C4273: 'Window::Start': vinculación de DLL incoherente
+  c:\users\administrador\desktop\pg2-engine\engine\enginedll\window.h(13): note: vea la definición anterior de 'Start'
+c:\users\administrador\desktop\pg2-engine\engine\enginedll\window.cpp(20): warning C4273: 'Window::Stop': vinculación de DLL incoherente
+  c:\users\administrador\desktop\pg2-engine\engine\enginedll\window.h(14): note: vea la definición anterior de 'Stop'
+  Renderer.cpp
+c:\users\administrador\desktop\pg2-engine\engine\enginedll\renderer.cpp(4): warning C4273: 'Renderer::Renderer': vinculación de DLL incoherente
+  c:\users\administrador\desktop\pg2-engine\engine\enginedll\renderer.h(7): note: vea la definición anterior de '{ctor}'
+c:\users\administrador\desktop\pg2-engine\engine\enginedll\renderer.cpp(7): warning C4273: 'Renderer::~Renderer': vinculación de DLL incoherente
+  c:\users\administrador\desktop\pg2-engine\engine\enginedll\renderer.h(8): note: vea la definición anterior de '{dtor}'
+c:\users\administrador\desktop\pg2-engine\engine\enginedll\renderer.cpp(9): warning C4273: 'Renderer::Start': vinculación de DLL incoherente
+  c:\users\administrador\desktop\pg2-engine\engine\enginedll\renderer.h(9): note: vea la definición anterior de 'Start'
+c:\users\administrador\desktop\pg2-engine\engine\enginedll\renderer.cpp(13): warning C4273: 'Renderer::Stop': vinculación de DLL incoherente
+  c:\users\administrador\desktop\pg2-engine\engine\enginedll\renderer.h(10): note: vea la definición anterior de 'Stop'
+  Gamebase.cpp
+c:\users\administrador\desktop\pg2-engine\engine\enginedll\gamebase.cpp(3): warning C4273: 'Gamebase::Gamebase': vinculación de DLL incoherente
+  c:\users\administrador\desktop\pg2-engine\engine\enginedll\gamebase.h(11): note: vea la definición anterior de '{ctor}'
+c:\users\administrador\desktop\pg2-engine\engine\enginedll\gamebase.cpp(6): warning C4273: 'Gamebase::~Gamebase': vinculación de DLL incoherente
+  c:\users\administrador\desktop\pg2-engine\engine\enginedll\gamebase.h(12): note: vea la definición anterior de '{dtor}'
+c:\users\administrador\desktop\pg2-engine\engine\enginedll\gamebase.cpp(8): warning C4273: 'Gamebase::Start': vinculación de DLL incoherente
+  c:\users\administrador\desktop\pg2-engine\engine\enginedll\gamebase.h(13): note: vea la definición anterior de 'Start'
+c:\users\administrador\desktop\pg2-engine\engine\enginedll\gamebase.cpp(18): warning C4273: 'Gamebase::Loop': vinculación de DLL incoherente
+  c:\users\administrador\desktop\pg2-engine\engine\enginedll\gamebase.h(15): note: vea la definición anterior de 'Loop'
+c:\users\administrador\desktop\pg2-engine\engine\enginedll\gamebase.cpp(24): warning C4273: 'Gamebase::Stop': vinculación de DLL incoherente
+  c:\users\administrador\desktop\pg2-engine\engine\enginedll\gamebase.h(14): note: vea la definición anterior de 'Stop'
+  Generando código...
+     Creando biblioteca C:\Users\Administrador\Desktop\PG2-Engine\Engine\x64\Debug\EngineDLL.lib y objeto C:\Users\Administrador\Desktop\PG2-Engine\Engine\x64\Debug\EngineDLL.exp
+LINK : fatal error LNK1561: se debe definir el punto de entrada
