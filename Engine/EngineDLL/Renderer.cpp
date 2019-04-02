@@ -17,6 +17,9 @@ bool Renderer::Start(Window* windowPtr) {
 
 		ProjectionMatrix = glm::ortho(-10.0f, 10.0f, -10.0f, 10.0f, 0.0f, 100.0f);		//Usamos una projeccion ortogonal
 
+		OthoProMatrix = glm::ortho(-10.0f, 10.0f, -10.0f, 10.0f, 0.0f, 100.0f);			// OrthoView predeterminada
+		PerspectiveProMatrix = glm::perspective(10.0f, 16.0f / 9.0f, 0.1f, 100.0f);		// PersView predeterminada
+
 		ViewMatrix = glm::lookAt(
 			glm::vec3(0, 0, 3),															// Camara en 0,0,3 en el World space
 			glm::vec3(0, 0, 0),															// Mira hacia el origen
@@ -189,5 +192,42 @@ void Renderer::TranslateCamera(glm::vec3 pos) {
 
 	WorldMatrix = glm::mat4(1.0f);
 
+	UpdateWVP();
+}
+
+void Renderer::SetOProjectionMatrix(float left, float right, float bottom, float top, float zNear, float zFar) {
+	ProjectionMatrix = glm::ortho(left, right, bottom, top, zNear, zFar);
+	OthoProMatrix = ProjectionMatrix;
+	UpdateWVP();
+}
+
+void Renderer::SetPProjectionMatrix(float fovY, float aspect, float zNear, float zFar) {
+	ProjectionMatrix = glm::perspective(fovY, aspect, zNear, zFar);
+	PerspectiveProMatrix = ProjectionMatrix;
+	UpdateWVP();
+}
+
+void Renderer::ChangeProjectionMatrix(CameraType camera) {
+	switch (camera) {
+		case ortho:
+			ProjectionMatrix = OthoProMatrix;
+			break;
+		case perspective:
+			ProjectionMatrix = PerspectiveProMatrix;
+			break;
+		default:
+			ProjectionMatrix = glm::ortho(-10.0f, 10.0f, -10.0f, 10.0f, 0.0f, 100.0f);
+			break;
+	}
+	UpdateWVP();
+}
+
+void Renderer::SetViewMatrix(glm::vec3 eye, glm::vec3 camera, glm::vec3 upAxis) {
+	ViewMatrix = glm::lookAt(
+		eye,															// Camara en 0,0,3 en el World space
+		camera,															// Mira hacia el origen
+		upAxis															// La cabeza esta hacia arriba (0, -1, 0 va a mirar cabeza abajo, dado vuelta) 
+	);
+	WorldMatrix = glm::mat4(1.0f);
 	UpdateWVP();
 }

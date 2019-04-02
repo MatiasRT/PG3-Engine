@@ -3,6 +3,7 @@
 #include <glm/glm.hpp>
 #include "Exports.h"
 #include "Window.h"
+#include "Definitions.h"
 #include <iostream>
 using namespace std;
 class ENGINEDLL_API Renderer {
@@ -12,6 +13,9 @@ class ENGINEDLL_API Renderer {
 	glm::mat4 ViewMatrix;
 	glm::mat4 ProjectionMatrix;
 	glm::mat4 wvp;
+
+	glm::mat4 OthoProMatrix;
+	glm::mat4 PerspectiveProMatrix;
 
 	glm::vec3 camera;
 	glm::vec3 eye;
@@ -42,4 +46,9 @@ public:
 	void UpdateTexture(unsigned int textureID);
 	void TranslateCamera(glm::vec3 pos);
 	glm::vec3 GetCameraPos() { return camera; };
+
+	void SetOProjectionMatrix(float left, float right, float bottom, float top, float zNear, float zFar);
+	void SetPProjectionMatrix(float fovY, float aspect, float zNear, float zFar);
+	void ChangeProjectionMatrix(CameraType camera);
+	void SetViewMatrix(glm::vec3 eye, glm::vec3 camera, glm::vec3 upAxis);
 };

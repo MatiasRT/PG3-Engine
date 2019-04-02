@@ -20,3 +20,8 @@ enum Directions {
 	Left,
 	Right
 };
+
+enum CameraType {
+	ortho,
+	perspective
+};
