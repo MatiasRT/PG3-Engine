@@ -19,6 +19,8 @@ class ENGINEDLL_API Renderer {
 
 	glm::vec3 camera;
 	glm::vec3 eye;
+	glm::vec3 upAxis;
+
 public:
 	Renderer() { };
 	~Renderer() { };
@@ -45,6 +47,8 @@ public:
 	void EndDraw(unsigned int attribute);
 	void UpdateTexture(unsigned int textureID);
 	void TranslateCamera(glm::vec3 pos);
+	void YawCamera(glm::vec3 rot);
+	void PitchCamera(glm::vec3 rot);
 	glm::vec3 GetCameraPos() { return camera; };
 
 	void SetOProjectionMatrix(float left, float right, float bottom, float top, float zNear, float zFar);

@@ -32,6 +32,7 @@ bool Renderer::Start(Window* windowPtr) {
 
 		camera = glm::vec3(0, 0, 0);
 		eye = glm::vec3(0, 0, 3);
+		upAxis = glm::vec3(0, 1, 0);
 
 		cout << "Renderer::Start()" << endl;
 		return true;
@@ -182,12 +183,45 @@ void Renderer::UpdateTexture(unsigned int textureID) {
 
 void Renderer::TranslateCamera(glm::vec3 pos) {
 	camera += pos;
-	eye += glm::vec3(pos.x, pos.y, 0);
+	//eye += glm::vec3(pos.x, pos.y, 0);
+	eye += glm::vec3(pos.x, pos.y, pos.z);
 
 	ViewMatrix = glm::lookAt(
 		eye,
 		camera,
 		glm::vec3(0, 1, 0)
+	);
+
+	WorldMatrix = glm::mat4(1.0f);
+
+	UpdateWVP();
+}
+
+void Renderer::YawCamera(glm::vec3 rot) {
+	upAxis += rot;
+
+	//eye += glm::vec3(rot.x, rot.y, rot.z);
+
+	ViewMatrix = glm::lookAt(
+		eye,
+		camera,
+		upAxis
+	);
+
+	WorldMatrix = glm::mat4(1.0f);
+
+	UpdateWVP();
+}
+
+void Renderer::PitchCamera(glm::vec3 rot) {
+	//upAxis += rot;
+
+	eye += glm::vec3(rot.x, rot.y, rot.z);
+
+	ViewMatrix = glm::lookAt(
+		eye,
+		camera,
+		upAxis
 	);
 
 	WorldMatrix = glm::mat4(1.0f);

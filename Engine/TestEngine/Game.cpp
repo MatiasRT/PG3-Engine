@@ -6,6 +6,8 @@ bool Game::OnStart() {
 	rotation = 0;
 	speed = 0;
 
+	camera = new Camera(renderer);
+
 	mat1 = new Material();																		// Creo un Material
 	unsigned int programID = mat1->LoadShaders("VertexColor.glsl", "FragmentColor.glsl");		// Le digo al Material cuales van a ser los shaders que tiene que utilizar. El VS se ejecuta una vez x cada pixel, y el FS se ejecuta una vez x muestra
 
@@ -87,8 +89,11 @@ bool Game::OnUpdate() {																			// Toda la logica va aca
 	tile->UpdateTilemap();
 	
 	/* CAMARA */
-	renderer->TranslateCamera(glm::vec3(speed * time, 0, 0));
-
+	//renderer->TranslateCamera(glm::vec3(speed * time, 0, 0));
+	//camera->Walk(speed * time, -0.1f * time);								// mov
+	//camera->Yaw(0.2f * time);												// rot 
+	camera->Pitch(0.2f * time, 0);											// otra rot
+		
 	/* ANIMACIONES*/
 	sp1->UpdateAnim(time);
 	sp2->UpdateAnim(time);

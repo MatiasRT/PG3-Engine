@@ -7,6 +7,7 @@
 #include <Importer.h>
 #include <Sprite.h>
 #include <Tilemap.h>
+#include <Camera.h>
 #include <iostream>
 class Game : public Gamebase {
 	int i;
@@ -29,6 +30,8 @@ class Game : public Gamebase {
 	Sprite * sp7;
 
 	Tilemap * tile;
+
+	Camera * camera;
 public:
 	Game() { i = 0; };
 	~Game() { };
