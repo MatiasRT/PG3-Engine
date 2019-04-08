@@ -197,37 +197,44 @@ void Renderer::TranslateCamera(glm::vec3 pos) {
 	UpdateWVP();
 }
 
-void Renderer::YawCamera(glm::vec3 rot) {
-	upAxis += rot;
-
-	//eye += glm::vec3(rot.x, rot.y, rot.z);
-
+/*void Renderer::YawCamera(glm::vec3 rot) {
+	
 	ViewMatrix = glm::lookAt(
-		eye,
+		rot,
 		camera,
 		upAxis
 	);
 
-	WorldMatrix = glm::mat4(1.0f);
+	//WorldMatrix = glm::mat4(1.0f);
+	WorldMatrix = glm::scale(glm::mat4(1.0f), glm::vec3(0.5f));
+
+	UpdateWVP();
+}*/
+
+void Renderer::RotateCamera(glm::vec3 rot) {
+
+	ViewMatrix = glm::rotate(ViewMatrix, rot.x, glm::vec3(0.0f, 1.0f, 0.0f));
+	ViewMatrix = glm::rotate(ViewMatrix, rot.y, glm::vec3(-1.0f, 0.0f, 0.0f));
+	ViewMatrix = glm::rotate(ViewMatrix, rot.z, glm::vec3(0.0f, 0.0f, 1.0f));
+
+	WorldMatrix = glm::scale(glm::mat4(1.0f), glm::vec3(0.5f));
 
 	UpdateWVP();
 }
 
-void Renderer::PitchCamera(glm::vec3 rot) {
-	//upAxis += rot;
-
-	eye += glm::vec3(rot.x, rot.y, rot.z);
+/*void Renderer::RollCamera(glm::vec3 rot) {
 
 	ViewMatrix = glm::lookAt(
 		eye,
 		camera,
-		upAxis
+		rot
 	);
 
-	WorldMatrix = glm::mat4(1.0f);
+	//WorldMatrix = glm::mat4(1.0f);
+	WorldMatrix = glm::scale(glm::mat4(1.0f), glm::vec3(0.5f));
 
 	UpdateWVP();
-}
+}*/
 
 void Renderer::SetOProjectionMatrix(float left, float right, float bottom, float top, float zNear, float zFar) {
 	ProjectionMatrix = glm::ortho(left, right, bottom, top, zNear, zFar);

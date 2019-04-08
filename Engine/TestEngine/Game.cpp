@@ -90,11 +90,12 @@ bool Game::OnUpdate() {																			// Toda la logica va aca
 	
 	/* CAMARA */
 	//renderer->TranslateCamera(glm::vec3(speed * time, 0, 0));
-	//camera->Walk(speed * time, -0.1f * time);								// mov
-	//camera->Yaw(0.2f * time);												// este es roll
-	//camera->Pitch(0, 0.2f * time);										// este es pitch
-	camera->Pitch(0.2f * time, 0);											// esto es yaw
 
+	//camera->Walk(0, -0.1f * time);								
+
+	camera->Yaw(0.2f * time);																	
+	//camera->Pitch(0.2f * time);																	
+	//camera->Roll(0.2f * time);																	
 		
 	/* ANIMACIONES*/
 	sp1->UpdateAnim(time);

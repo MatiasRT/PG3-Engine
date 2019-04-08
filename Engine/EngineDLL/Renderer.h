@@ -47,8 +47,10 @@ public:
 	void EndDraw(unsigned int attribute);
 	void UpdateTexture(unsigned int textureID);
 	void TranslateCamera(glm::vec3 pos);
-	void YawCamera(glm::vec3 rot);
-	void PitchCamera(glm::vec3 rot);
+	//void YawCamera(glm::vec3 rot);
+	//void PitchCamera(glm::vec3 rot);
+	//void RollCamera(glm::vec3 rot);
+	void RotateCamera(glm::vec3 rot);
 	glm::vec3 GetCameraPos() { return camera; };
 
 	void SetOProjectionMatrix(float left, float right, float bottom, float top, float zNear, float zFar);
