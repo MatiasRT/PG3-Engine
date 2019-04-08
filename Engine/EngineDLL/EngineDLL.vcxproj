@@ -128,6 +128,7 @@
     <ClInclude Include="Exports.h" />
     <ClInclude Include="Gamebase.h" />
     <ClInclude Include="Importer.h" />
+    <ClInclude Include="Input.h" />
     <ClInclude Include="Material.h" />
     <ClInclude Include="Rectangle.h" />
     <ClInclude Include="Renderer.h" />
@@ -150,6 +151,7 @@
     <ClCompile Include="Entity.cpp" />
     <ClCompile Include="Gamebase.cpp" />
     <ClCompile Include="Importer.cpp" />
+    <ClCompile Include="Input.cpp" />
     <ClCompile Include="Material.cpp" />
     <ClCompile Include="Rectangle.cpp" />
     <ClCompile Include="Renderer.cpp" />

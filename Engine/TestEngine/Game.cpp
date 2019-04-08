@@ -7,6 +7,8 @@ bool Game::OnStart() {
 	speed = 0;
 
 	camera = new Camera(renderer);
+	Input* input = Input::Instance();
+	input->SetWindow(GetWindow());
 
 	mat1 = new Material();																		// Creo un Material
 	unsigned int programID = mat1->LoadShaders("VertexColor.glsl", "FragmentColor.glsl");		// Le digo al Material cuales van a ser los shaders que tiene que utilizar. El VS se ejecuta una vez x cada pixel, y el FS se ejecuta una vez x muestra
@@ -82,7 +84,9 @@ bool Game::OnStart() {
 }
 
 bool Game::OnUpdate() {																			// Toda la logica va aca
+	Input* input = Input::Instance();
 	CollisionManager::Instance()->BoxCollisionDetector();
+	input->PollEvents();
 	speed = 1.0f;
 
 	/* TILES */
@@ -91,9 +95,32 @@ bool Game::OnUpdate() {																			// Toda la logica va aca
 	/* CAMARA */
 	//renderer->TranslateCamera(glm::vec3(speed * time, 0, 0));
 
+	/* MOVIMIENTO CAMARA */
+	if (input->GetInput(GLFW_KEY_W))
+		camera->Walk(0, -0.1f);
+	if (input->GetInput(GLFW_KEY_S))
+		camera->Walk(0, 0.1f);
+	if (input->GetInput(GLFW_KEY_A))
+		camera->Walk(-0.4f, 0);
+	if (input->GetInput(GLFW_KEY_D))
+		camera->Walk(0.4f, 0);
 	//camera->Walk(0, -0.1f * time);								
 
-	camera->Yaw(0.2f * time);																	
+	/* ROTACION CAMARA */
+	if (input->GetInput(GLFW_KEY_UP))
+		camera->Pitch(0.01f);
+	if (input->GetInput(GLFW_KEY_DOWN))
+		camera->Pitch(-0.01f);
+	if (input->GetInput(GLFW_KEY_LEFT))
+		camera->Yaw(-0.01f);
+	if (input->GetInput(GLFW_KEY_RIGHT))
+		camera->Yaw(0.01f);
+	if (input->GetInput(GLFW_KEY_Q))
+		camera->Roll(-0.01f);
+	if (input->GetInput(GLFW_KEY_E))
+		camera->Roll(0.01f);
+
+	//camera->Yaw(0.2f * time);																	
 	//camera->Pitch(0.2f * time);																	
 	//camera->Roll(0.2f * time);																	
 		
@@ -158,6 +185,7 @@ bool Game::OnStop() {
 	delete mat1;
 	delete mat2;
 	delete tile;
+	delete camera;
 	cout << "Game::OnStop()" << endl;
 	return false;
 }

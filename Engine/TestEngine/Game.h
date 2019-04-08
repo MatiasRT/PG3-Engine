@@ -8,6 +8,7 @@
 #include <Sprite.h>
 #include <Tilemap.h>
 #include <Camera.h>
+#include <Input.h>
 #include <iostream>
 class Game : public Gamebase {
 	int i;
