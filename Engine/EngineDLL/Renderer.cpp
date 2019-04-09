@@ -181,10 +181,10 @@ void Renderer::UpdateTexture(unsigned int textureID) {
 	glBindTexture(GL_TEXTURE_2D, textureID);
 }
 
-void Renderer::TranslateCamera(glm::vec3 pos) {
-	camera += pos;
+void Renderer::TranslateCamera(glm::mat4 pos) {
+	/*camera += pos;
 	//eye += glm::vec3(pos.x, pos.y, 0);
-	eye += glm::vec3(pos.x, pos.y, pos.z);
+	eye += pos;
 
 	ViewMatrix = glm::lookAt(
 		eye,
@@ -194,47 +194,24 @@ void Renderer::TranslateCamera(glm::vec3 pos) {
 
 	WorldMatrix = glm::mat4(1.0f);
 
+	UpdateWVP();*/
+	ViewMatrix = pos;
 	UpdateWVP();
 }
 
-/*void Renderer::YawCamera(glm::vec3 rot) {
-	
-	ViewMatrix = glm::lookAt(
-		rot,
-		camera,
-		upAxis
-	);
+void Renderer::RotateCamera(glm::mat4 rot) {
 
-	//WorldMatrix = glm::mat4(1.0f);
-	WorldMatrix = glm::scale(glm::mat4(1.0f), glm::vec3(0.5f));
-
-	UpdateWVP();
-}*/
-
-void Renderer::RotateCamera(glm::vec3 rot) {
-
-	ViewMatrix = glm::rotate(ViewMatrix, rot.x, glm::vec3(0.0f, 1.0f, 0.0f));
+	/*ViewMatrix = glm::rotate(ViewMatrix, rot.x, glm::vec3(0.0f, 1.0f, 0.0f));
 	ViewMatrix = glm::rotate(ViewMatrix, rot.y, glm::vec3(-1.0f, 0.0f, 0.0f));
 	ViewMatrix = glm::rotate(ViewMatrix, rot.z, glm::vec3(0.0f, 0.0f, 1.0f));
-
+	
 	WorldMatrix = glm::scale(glm::mat4(1.0f), glm::vec3(0.5f));
 
+	UpdateWVP();*/
+
+	ViewMatrix = rot;
 	UpdateWVP();
 }
-
-/*void Renderer::RollCamera(glm::vec3 rot) {
-
-	ViewMatrix = glm::lookAt(
-		eye,
-		camera,
-		rot
-	);
-
-	//WorldMatrix = glm::mat4(1.0f);
-	WorldMatrix = glm::scale(glm::mat4(1.0f), glm::vec3(0.5f));
-
-	UpdateWVP();
-}*/
 
 void Renderer::SetOProjectionMatrix(float left, float right, float bottom, float top, float zNear, float zFar) {
 	ProjectionMatrix = glm::ortho(left, right, bottom, top, zNear, zFar);

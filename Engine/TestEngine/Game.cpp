@@ -97,13 +97,13 @@ bool Game::OnUpdate() {																			// Toda la logica va aca
 
 	/* MOVIMIENTO CAMARA */
 	if (input->GetInput(GLFW_KEY_W))
-		camera->Walk(0, -0.1f);
-	if (input->GetInput(GLFW_KEY_S))
 		camera->Walk(0, 0.1f);
+	if (input->GetInput(GLFW_KEY_S))
+		camera->Walk(0, -0.1f);
 	if (input->GetInput(GLFW_KEY_A))
-		camera->Walk(-0.4f, 0);
-	if (input->GetInput(GLFW_KEY_D))
 		camera->Walk(0.4f, 0);
+	if (input->GetInput(GLFW_KEY_D))
+		camera->Walk(-0.4f, 0);
 	//camera->Walk(0, -0.1f * time);								
 
 	/* ROTACION CAMARA */

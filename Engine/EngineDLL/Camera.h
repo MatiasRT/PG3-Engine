@@ -7,6 +7,8 @@
 class ENGINEDLL_API Camera {
 	
 	Renderer* render;
+	glm::mat4 ViewMatrix;
+
 public:
 	Camera(Renderer * renderer);
 	~Camera() {};
