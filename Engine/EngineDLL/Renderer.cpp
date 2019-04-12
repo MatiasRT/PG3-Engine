@@ -181,35 +181,8 @@ void Renderer::UpdateTexture(unsigned int textureID) {
 	glBindTexture(GL_TEXTURE_2D, textureID);
 }
 
-void Renderer::TranslateCamera(glm::mat4 pos) {
-	/*camera += pos;
-	//eye += glm::vec3(pos.x, pos.y, 0);
-	eye += pos;
-
-	ViewMatrix = glm::lookAt(
-		eye,
-		camera,
-		glm::vec3(0, 1, 0)
-	);
-
-	WorldMatrix = glm::mat4(1.0f);
-
-	UpdateWVP();*/
-	ViewMatrix = pos;
-	UpdateWVP();
-}
-
-void Renderer::RotateCamera(glm::mat4 rot) {
-
-	/*ViewMatrix = glm::rotate(ViewMatrix, rot.x, glm::vec3(0.0f, 1.0f, 0.0f));
-	ViewMatrix = glm::rotate(ViewMatrix, rot.y, glm::vec3(-1.0f, 0.0f, 0.0f));
-	ViewMatrix = glm::rotate(ViewMatrix, rot.z, glm::vec3(0.0f, 0.0f, 1.0f));
-	
-	WorldMatrix = glm::scale(glm::mat4(1.0f), glm::vec3(0.5f));
-
-	UpdateWVP();*/
-
-	ViewMatrix = rot;
+void Renderer::ModifyCamera(glm::mat4 mat) {
+	ViewMatrix = mat;
 	UpdateWVP();
 }
 

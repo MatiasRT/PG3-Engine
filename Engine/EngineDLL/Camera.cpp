@@ -1,40 +1,70 @@
 #include "Camera.h"
 
 Camera::Camera(Renderer * renderer) {
+	forward = glm::vec4(0, 0, 1, 0);
+	right = glm::vec4(1, 0, 0, 0);
+	up = glm::vec4(0, 1, 0, 0);
+
+	pos = glm::vec4(0, 0, 0, 1);
+
 	render = renderer;
 	ViewMatrix = glm::lookAt(
-		glm::vec3(0, 0, 3),
-		glm::vec3(0, 0, 0),
-		glm::vec3(0, 1, 0)
+		(glm::vec3)pos,
+		(glm::vec3)(pos + forward),
+		(glm::vec3)up
 	);
 }
 
 void Camera::Walk(float xAxis, float zAxis) {
-	ViewMatrix = glm::translate(ViewMatrix, glm::vec3(xAxis, 0, zAxis));
-	//render->TranslateCamera(glm::vec3(xAxis, 0, zAxis));
-	render->TranslateCamera(ViewMatrix);
+	pos = glm::translate(glm::mat4(1.0f), glm::vec3(xAxis, 0, zAxis)) * pos;
+
+	ViewMatrix = glm::lookAt(
+		(glm::vec3)pos,
+		(glm::vec3)(pos + forward),
+		(glm::vec3)up
+	);
+
+	render->ModifyCamera(ViewMatrix);
 }
 
 void Camera::Yaw(float xAxis) {
 
-	//glm::vec3 rot = glm::vec3(xAxis, 0, 0);
-	ViewMatrix = glm::rotate(ViewMatrix, xAxis, glm::vec3(0.0f, 1.0f, 0.0f));
+	forward = glm::rotate(glm::mat4(1.0f), xAxis, glm::vec3(0.0f, 1.0f, 0.0f)) * forward;
+	right = glm::rotate(glm::mat4(1.0f), xAxis, glm::vec3(0.0f, 1.0f, 0.0f)) * right;
+	
+	ViewMatrix = glm::lookAt(
+		(glm::vec3)pos,															
+		(glm::vec3)(pos + forward),
+		(glm::vec3)up
+	);
 
-	render->RotateCamera(ViewMatrix);
+	render->ModifyCamera(ViewMatrix);
 }
 
 void Camera::Pitch(float yAxis) {
 
-	//glm::vec3 rot(0, yAxis, 0);
-	ViewMatrix = glm::rotate(ViewMatrix, yAxis, glm::vec3(-1.0f, 0.0f, 0.0f));
+	forward = glm::rotate(glm::mat4(1.0f), yAxis, glm::vec3(1.0f, 0.0f, 0.0f)) * forward;
+	up = glm::rotate(glm::mat4(1.0f), yAxis, glm::vec3(1.0f, 0.0f, 0.0f)) * up;
 
-	render->RotateCamera(ViewMatrix);
+	ViewMatrix = glm::lookAt(
+		(glm::vec3)pos,
+		(glm::vec3)(pos + forward),
+		(glm::vec3)up
+	);
+
+	render->ModifyCamera(ViewMatrix);
 }
 
 void Camera::Roll(float zAxis) {
 
-	//glm::vec3 rot(0, 0, zAxis);
-	ViewMatrix = glm::rotate(ViewMatrix, zAxis, glm::vec3(0.0f, 0.0f, 1.0f));
+	right = glm::rotate(glm::mat4(1.0f), zAxis, glm::vec3(0.0f, 0.0f, 1.0f)) * right;
+	up = glm::rotate(glm::mat4(1.0f), zAxis, glm::vec3(0.0f, 0.0f, 1.0f)) * up;
 
-	render->RotateCamera(ViewMatrix);
+	ViewMatrix = glm::lookAt(
+		(glm::vec3)pos,
+		(glm::vec3)(pos + forward),
+		(glm::vec3)up
+	);
+
+	render->ModifyCamera(ViewMatrix);
 }

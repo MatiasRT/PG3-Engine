@@ -1,13 +1,19 @@
 #pragma once
+#include <iostream>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/glm.hpp>
 #include "Exports.h"
 #include "Entity.h"
 #include "Renderer.h"
+using namespace std;
 class ENGINEDLL_API Camera {
 	
 	Renderer* render;
 	glm::mat4 ViewMatrix;
+	glm::vec4 forward;
+	glm::vec4 right;
+	glm::vec4 up;
+	glm::vec4 pos;
 
 public:
 	Camera(Renderer * renderer);
