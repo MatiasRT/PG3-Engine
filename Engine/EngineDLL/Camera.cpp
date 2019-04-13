@@ -16,7 +16,7 @@ Camera::Camera(Renderer * renderer) {
 }
 
 void Camera::Walk(float xAxis, float zAxis) {
-	pos = glm::translate(glm::mat4(1.0f), glm::vec3(xAxis, 0, zAxis)) * pos;
+	pos = glm::translate(glm::mat4(1.0f), (glm::vec3)((right * xAxis)+(forward * zAxis))) * pos;
 
 	ViewMatrix = glm::lookAt(
 		(glm::vec3)pos,
@@ -44,7 +44,7 @@ void Camera::Yaw(float xAxis) {
 void Camera::Pitch(float yAxis) {
 
 	forward = glm::rotate(glm::mat4(1.0f), yAxis, glm::vec3(1.0f, 0.0f, 0.0f)) * forward;
-	up = glm::rotate(glm::mat4(1.0f), yAxis, glm::vec3(1.0f, 0.0f, 0.0f)) * up;
+	//up = glm::rotate(glm::mat4(1.0f), yAxis, glm::vec3(1.0f, 0.0f, 0.0f)) * up;
 
 	ViewMatrix = glm::lookAt(
 		(glm::vec3)pos,
