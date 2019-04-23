@@ -79,6 +79,15 @@ unsigned int Renderer::GenColorBuffer(float* buffer, int size) {
 	return colorbuffer;
 }
 
+unsigned int Renderer::GenElementBuffer(vector<unsigned int> indices)
+{
+	unsigned int elementbuffer;
+	glGenBuffers(1, &elementbuffer);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, elementbuffer);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(unsigned int), &indices[0], GL_STATIC_DRAW);
+	return elementbuffer;
+}
+
 /* REVISAR ESTO TAMBIEN QUE SE REPITE EN LOS GEN */
 
 unsigned int Renderer::UploadData(float width, float height, const void* data) {
@@ -131,6 +140,18 @@ void Renderer::BindBuffer(unsigned int vtxbuffer, unsigned int attribute){				//
 		GL_FALSE,																		// normalizado?
 		0,																				// Paso
 		(void*)0																		// desfase del buffer
+	);
+}
+
+void Renderer::BindElementBuffer(unsigned int elementbuffer, vector<unsigned int> indices) {
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, elementbuffer);
+
+	// Draw the triangles !
+	glDrawElements(
+		GL_TRIANGLES,      // mode
+		indices.size(),    // count
+		GL_UNSIGNED_INT,   // type
+		(void*)0           // element array buffer offset
 	);
 }
 

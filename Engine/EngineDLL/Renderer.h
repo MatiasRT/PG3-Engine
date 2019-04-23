@@ -4,6 +4,7 @@
 #include "Exports.h"
 #include "Window.h"
 #include "Definitions.h"
+#include <vector>
 #include <iostream>
 using namespace std;
 class ENGINEDLL_API Renderer {
@@ -31,6 +32,7 @@ public:
 	void SwapBuffers();
 	unsigned int GenBuffer(float* buffer, int size);
 	unsigned int GenColorBuffer(float* buffer, int size);
+	unsigned int GenElementBuffer(vector<unsigned int> indices);
 	unsigned int UploadData(float width, float height, const void* data);
 	void DrawBuffer(int size, int type);
 	void DestroyBuffer(unsigned int buffer);
@@ -41,6 +43,7 @@ public:
 	glm::mat4& GetWVP() { return wvp; }
 	void BeginDraw(unsigned int attribute);
 	void BindBuffer(unsigned int vtxbuffer, unsigned int attribute);
+	void BindElementBuffer(unsigned int elementbuffer, vector<unsigned int> indices);
 	void BindColorBuffer(unsigned int clrbuffer, unsigned int attribute);
 	void BindTextureBuffer(unsigned int txrbuffer, unsigned int attribute);
 	void BindTexture(unsigned int textureID, unsigned int txrbufferID);

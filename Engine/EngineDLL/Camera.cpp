@@ -29,8 +29,8 @@ void Camera::Walk(float xAxis, float zAxis) {
 
 void Camera::Yaw(float xAxis) {
 
-	forward = glm::rotate(glm::mat4(1.0f), xAxis, glm::vec3(0.0f, 1.0f, 0.0f)) * forward;
-	right = glm::rotate(glm::mat4(1.0f), xAxis, glm::vec3(0.0f, 1.0f, 0.0f)) * right;
+	forward = glm::rotate(glm::mat4(1.0f), xAxis, glm::vec3(up.x, up.y, up.z)) * forward;
+	right = glm::rotate(glm::mat4(1.0f), xAxis, glm::vec3(up.x, up.y, up.z)) * right;
 	
 	ViewMatrix = glm::lookAt(
 		(glm::vec3)pos,															
@@ -43,8 +43,8 @@ void Camera::Yaw(float xAxis) {
 
 void Camera::Pitch(float yAxis) {
 
-	forward = glm::rotate(glm::mat4(1.0f), yAxis, glm::vec3(1.0f, 0.0f, 0.0f)) * forward;
-	//up = glm::rotate(glm::mat4(1.0f), yAxis, glm::vec3(1.0f, 0.0f, 0.0f)) * up;
+	forward = glm::rotate(glm::mat4(1.0f), yAxis, glm::vec3(right.x, right.y, right.z)) * forward;
+	up = glm::rotate(glm::mat4(1.0f), yAxis, glm::vec3(right.x, right.y, right.z)) * up;
 
 	ViewMatrix = glm::lookAt(
 		(glm::vec3)pos,
@@ -57,8 +57,8 @@ void Camera::Pitch(float yAxis) {
 
 void Camera::Roll(float zAxis) {
 
-	right = glm::rotate(glm::mat4(1.0f), zAxis, glm::vec3(0.0f, 0.0f, 1.0f)) * right;
-	up = glm::rotate(glm::mat4(1.0f), zAxis, glm::vec3(0.0f, 0.0f, 1.0f)) * up;
+	right = glm::rotate(glm::mat4(1.0f), zAxis, glm::vec3(forward.x, forward.y, forward.z)) * right;
+	up = glm::rotate(glm::mat4(1.0f), zAxis, glm::vec3(forward.x, forward.y, forward.z)) * up;
 
 	ViewMatrix = glm::lookAt(
 		(glm::vec3)pos,
