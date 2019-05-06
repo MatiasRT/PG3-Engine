@@ -13,52 +13,50 @@ Mesh::Mesh(Renderer * renderer) : Shape(renderer){
 	vtxColorCount = 8;
 	idxCount = 12;
 
-	vertex = new float[vtxCount * 3]{
-																// front
-		-1.0, -1.0,  1.0,
+	vertex = new float[vtxCount * 3]{															
+		-1.0, -1.0,  1.0,										// frente
 		1.0, -1.0,  1.0,
 		1.0,  1.0,  1.0,
 		-1.0,  1.0,  1.0,
-																// back
-		-1.0, -1.0, -1.0,
+																
+		-1.0, -1.0, -1.0,										// atras
 		1.0, -1.0, -1.0,
 		1.0,  1.0, -1.0,
 		-1.0,  1.0, -1.0
 	};
 	SetVertices(vertex, vtxCount);
 
-	colorVertex = new float[vtxColorCount * 3]{
-																// front colors
-		1.0, 0.0, 0.0,
-		1.0, 0.0, 0.0,
-		1.0, 0.0, 0.0,
-		1.0, 0.0, 0.0,
-																// back colors
+	colorVertex = new float[vtxColorCount * 3]{															
+		0.0, 0.0, 1.0,											// frente
 		0.0, 1.0, 0.0,
+		1.0, 0.0, 0.0,
+		1.0, 1.0, 1.0,
+																
+		0.0, 0.0, 1.0,											// atras
 		0.0, 1.0, 0.0,
-		0.0, 1.0, 0.0,
+		1.0, 0.0, 0.0,
 		1.0, 1.0, 1.0
 	};
 	SetColorVertices(colorVertex, vtxColorCount);
 
 	indices = new unsigned int[idxCount * 3]{
-																// front
-		0, 1, 2,
+																
+		0, 1, 2,												// frente
 		2, 3, 0,
-																// top
-		1, 5, 6,
+																
+		1, 5, 6,												// superior
 		6, 2, 1,
-																// back
-		7, 6, 5,
+																
+		7, 6, 5,												// atras
 		5, 4, 7,
-																// bottom
-		4, 0, 3,
+																
+		4, 0, 3,												// inferior
 		3, 7, 4,
-																// left
-		4, 5, 1,
+																
+		4, 5, 1,												// izquierda
 		1, 0, 4,
-																// right
-		3, 2, 6,
+																
+		3, 2, 6,												// derecha
 		6, 7, 3,
 	};
 	SetIndexVertices(indices, idxCount);

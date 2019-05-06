@@ -168,7 +168,7 @@ bool Game::OnUpdate() {																			// Toda la logica va aca
 }
 
 void Game::OnDraw() {
-	tile->DrawTilemap();
+	//tile->DrawTilemap();
 
 	/*sp1->Draw();
 	sp2->Draw();

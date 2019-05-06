@@ -44,7 +44,6 @@ public:
 	glm::mat4& GetWVP() { return wvp; }
 	void BeginDraw(unsigned int attribute);
 	void BindBuffer(unsigned int vtxbuffer, unsigned int attribute);
-	void BindElementBuffer(unsigned int elementbuffer, int size);
 	void BindColorBuffer(unsigned int clrbuffer, unsigned int attribute);
 	void BindTextureBuffer(unsigned int txrbuffer, unsigned int attribute);
 	void BindTexture(unsigned int textureID, unsigned int txrbufferID);

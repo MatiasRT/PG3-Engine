@@ -15,6 +15,9 @@ bool Renderer::Start(Window* windowPtr) {
 		glGenVertexArrays(1, &VertexArrayID);											// Creamos el Vertex Array Object. Esto debe hacerse antes de cualquier llamada a una funcion OpenGL
 		glBindVertexArray(VertexArrayID);												// Creamos el Vertex Array Object
 
+		glEnable(GL_DEPTH_TEST);														// Habilitamos el depth buffer
+		glDepthFunc(GL_LESS);
+
 		ProjectionMatrix = glm::ortho(-10.0f, 10.0f, -10.0f, 10.0f, 0.0f, 100.0f);		//Usamos una projeccion ortogonal
 
 		OthoProMatrix = glm::ortho(-10.0f, 10.0f, -10.0f, 10.0f, 0.0f, 100.0f);			// OrthoView predeterminada
@@ -139,18 +142,6 @@ void Renderer::BindBuffer(unsigned int vtxbuffer, unsigned int attribute){				//
 		GL_FALSE,																		// normalizado?
 		0,																				// Paso
 		(void*)0																		// desfase del buffer
-	);
-}
-
-void Renderer::BindElementBuffer(unsigned int elementbuffer, int size) {
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, elementbuffer);
-
-	// Draw the triangles !
-	glDrawElements(
-		GL_TRIANGLES,      // mode
-		size,    // count
-		GL_UNSIGNED_INT,   // type
-		(void*)0           // element array buffer offset
 	);
 }
 
