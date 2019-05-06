@@ -79,6 +79,11 @@ bool Game::OnStart() {
 	instance->FillingBoxList(Bullet_layer, sp7);
 	sp7->SetAnimation(0, 63, 0.1f);
 
+
+	mesh = new Mesh(renderer);
+	mesh->SetMaterial(mat1);
+	mesh->SetPos(4, 0, 2);
+
 	cout<<"Game::OnStart()"<<endl;
 	return true;
 }
@@ -165,13 +170,14 @@ bool Game::OnUpdate() {																			// Toda la logica va aca
 void Game::OnDraw() {
 	tile->DrawTilemap();
 
-	sp1->Draw();
+	/*sp1->Draw();
 	sp2->Draw();
 	sp3->Draw();
 	sp4->Draw();
 	sp5->Draw();
 	sp6->Draw();
-	sp7->Draw();
+	sp7->Draw();*/
+	mesh->Draw();
 }
 
 bool Game::OnStop() {
@@ -185,6 +191,7 @@ bool Game::OnStop() {
 	delete mat1;
 	delete mat2;
 	delete tile;
+	delete mesh;
 	delete camera;
 	cout << "Game::OnStop()" << endl;
 	return false;

@@ -79,12 +79,11 @@ unsigned int Renderer::GenColorBuffer(float* buffer, int size) {
 	return colorbuffer;
 }
 
-unsigned int Renderer::GenElementBuffer(vector<unsigned int> indices)
-{
+unsigned int Renderer::GenElementBuffer(unsigned int * indices, int size) {
 	unsigned int elementbuffer;
 	glGenBuffers(1, &elementbuffer);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, elementbuffer);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(unsigned int), &indices[0], GL_STATIC_DRAW);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, size, indices, GL_STATIC_DRAW);
 	return elementbuffer;
 }
 
@@ -143,13 +142,13 @@ void Renderer::BindBuffer(unsigned int vtxbuffer, unsigned int attribute){				//
 	);
 }
 
-void Renderer::BindElementBuffer(unsigned int elementbuffer, vector<unsigned int> indices) {
+void Renderer::BindElementBuffer(unsigned int elementbuffer, int size) {
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, elementbuffer);
 
 	// Draw the triangles !
 	glDrawElements(
 		GL_TRIANGLES,      // mode
-		indices.size(),    // count
+		size,    // count
 		GL_UNSIGNED_INT,   // type
 		(void*)0           // element array buffer offset
 	);
@@ -190,6 +189,16 @@ void Renderer::BindTexture(unsigned int textureID, unsigned int txrbufferID) {
 
 void Renderer::DrawBuffer(int size, int type) {											// Dibujamos en el buffer
 	glDrawArrays(type, 0, size);														// Empezar desde el vértice 0S; 3 vértices en total -> 1 triángulo
+}
+
+void Renderer::DrawElementBuffer(unsigned int * indices, int size, unsigned int indexBuffer) {
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexBuffer);
+	glDrawElements(
+		GL_TRIANGLES,		// mode
+		size,				// count
+		GL_UNSIGNED_INT,	// type
+		(void*)0			// element array buffer offset
+	);
 }
 
 void Renderer::EndDraw(unsigned int attribute){

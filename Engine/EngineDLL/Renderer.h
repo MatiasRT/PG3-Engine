@@ -32,9 +32,10 @@ public:
 	void SwapBuffers();
 	unsigned int GenBuffer(float* buffer, int size);
 	unsigned int GenColorBuffer(float* buffer, int size);
-	unsigned int GenElementBuffer(vector<unsigned int> indices);
+	unsigned int GenElementBuffer(unsigned int * indices, int size);
 	unsigned int UploadData(float width, float height, const void* data);
 	void DrawBuffer(int size, int type);
+	void DrawElementBuffer(unsigned int * indices, int size, unsigned int indexBuffer);
 	void DestroyBuffer(unsigned int buffer);
 	void UpdateWVP();
 	void LoadIdentityMatrix();
@@ -43,7 +44,7 @@ public:
 	glm::mat4& GetWVP() { return wvp; }
 	void BeginDraw(unsigned int attribute);
 	void BindBuffer(unsigned int vtxbuffer, unsigned int attribute);
-	void BindElementBuffer(unsigned int elementbuffer, vector<unsigned int> indices);
+	void BindElementBuffer(unsigned int elementbuffer, int size);
 	void BindColorBuffer(unsigned int clrbuffer, unsigned int attribute);
 	void BindTextureBuffer(unsigned int txrbuffer, unsigned int attribute);
 	void BindTexture(unsigned int textureID, unsigned int txrbufferID);

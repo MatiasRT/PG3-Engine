@@ -46,6 +46,23 @@ void Shape::DrawMesh(int type) {
 	renderer->EndDraw(1);
 }
 
+void Shape::DrawIndexMesh(unsigned int * indices, int idxCount, unsigned int indexBufferId) {
+	renderer->LoadIdentityMatrix();
+	renderer->SetModelMatrix(worldMatrix);
+
+	if (material != NULL) {
+		material->Bind();
+		material->SetMatrixProperty(renderer->GetWVP());
+	}
+	renderer->BeginDraw(0);													// Le decimos al renderer que comience a dibujar
+	renderer->BeginDraw(1);
+	renderer->BindElementBuffer(bufferId, 0);								// Unimos el buffer con el buffer binding point
+	renderer->BindColorBuffer(colorBufferId, 1);
+	renderer->DrawElementBuffer(indices, idxCount, indexBufferId);			// El renderer dibuja el triangulo
+	renderer->EndDraw(0);													// Deja de dibujar
+	renderer->EndDraw(1);
+}
+
 void Shape::Dispose() {
 	if (shouldDispose) {
 		renderer->DestroyBuffer(bufferId);

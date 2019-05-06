@@ -21,6 +21,7 @@ public:
 	void SetColorVertices(float* vertex, int count);
 	virtual void Draw() = 0;
 	void DrawMesh(int type);
+	void DrawIndexMesh(unsigned int * indices, int idxCount, unsigned int indexBufferId);
 	void Dispose();
 	void DisposeColor();
 	void SetMaterial(Material* material);

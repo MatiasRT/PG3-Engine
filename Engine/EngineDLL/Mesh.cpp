@@ -1,64 +1,85 @@
 #include "Mesh.h"
 
-Mesh::Mesh(Renderer * renderer) : Entity(renderer){
+Mesh::Mesh(Renderer * renderer) : Shape(renderer){
 	shouldDispose = false;
 	shouldDisposeColor = false;
-	material = NULL;
-	vertex = NULL;
-	colorVertex = NULL;
+	shouldDisposeIndices = false;
+	
 	bufferId = -1;
 	colorBufferId = -1;
+	indexBufferId = -1;
+
+	vtxCount = 8;
+	vtxColorCount = 8;
+	idxCount = 12;
+
+	vertex = new float[vtxCount * 3]{
+																// front
+		-1.0, -1.0,  1.0,
+		1.0, -1.0,  1.0,
+		1.0,  1.0,  1.0,
+		-1.0,  1.0,  1.0,
+																// back
+		-1.0, -1.0, -1.0,
+		1.0, -1.0, -1.0,
+		1.0,  1.0, -1.0,
+		-1.0,  1.0, -1.0
+	};
+	SetVertices(vertex, vtxCount);
+
+	colorVertex = new float[vtxColorCount * 3]{
+																// front colors
+		1.0, 0.0, 0.0,
+		1.0, 0.0, 0.0,
+		1.0, 0.0, 0.0,
+		1.0, 0.0, 0.0,
+																// back colors
+		0.0, 1.0, 0.0,
+		0.0, 1.0, 0.0,
+		0.0, 1.0, 0.0,
+		1.0, 1.0, 1.0
+	};
+	SetColorVertices(colorVertex, vtxColorCount);
+
+	indices = new unsigned int[idxCount * 3]{
+																// front
+		0, 1, 2,
+		2, 3, 0,
+																// top
+		1, 5, 6,
+		6, 2, 1,
+																// back
+		7, 6, 5,
+		5, 4, 7,
+																// bottom
+		4, 0, 3,
+		3, 7, 4,
+																// left
+		4, 5, 1,
+		1, 0, 4,
+																// right
+		3, 2, 6,
+		6, 7, 3,
+	};
+	SetIndexVertices(indices, idxCount);
 }
 
-void Mesh::SetVertices(float* vertex, int count) {
-	Dispose();
+void Mesh::SetIndexVertices(unsigned int * indices, int count) {
+	DisposeIndex();
 
-	vtxCount = count;
-	shouldDispose = true;
-
-	bufferId = renderer->GenBuffer(vertex, sizeof(float) * count * 3);
+	idxCount = count;
+	shouldDisposeIndices = true;
+	//indexBufferId = renderer->GenMeshBuffer(indices, sizeof(int) * indexCount * 3);
+	indexBufferId = renderer->GenElementBuffer(indices, sizeof(int) * idxCount * 3);
 }
 
-void Mesh::SetColorVertices(float* vertex, int count) {
-	DisposeColor();
-
-	vtxColorCount = count;
-	shouldDisposeColor = true;
-
-	colorBufferId = renderer->GenColorBuffer(vertex, sizeof(float) * count * 3);
-}
-
-void Mesh::DrawMesh(int type) {
-	renderer->LoadIdentityMatrix();
-	renderer->SetModelMatrix(worldMatrix);
-
-	if (material != NULL) {
-		material->Bind();
-		material->SetMatrixProperty(renderer->GetWVP());
+void Mesh::DisposeIndex() {
+	if (shouldDisposeIndices) {
+		renderer->DestroyBuffer(indexBufferId);
+		shouldDisposeIndices = false;
 	}
-	renderer->BeginDraw(0);													// Le decimos al renderer que comience a dibujar
-	renderer->BeginDraw(1);
-	renderer->BindBuffer(bufferId, 0);										// Unimos el buffer con el buffer binding point
-	renderer->BindColorBuffer(colorBufferId, 1);
-	renderer->DrawBuffer(vtxCount, type);									// El renderer dibuja el triangulo
-	renderer->EndDraw(0);													// Deja de dibujar
-	renderer->EndDraw(1);
 }
 
-void Mesh::Dispose() {
-	if (shouldDispose) {
-		renderer->DestroyBuffer(bufferId);
-		shouldDispose = false;
-	}
-}
-
-void Mesh::DisposeColor() {
-	if (shouldDisposeColor) {
-		renderer->DestroyBuffer(colorBufferId);
-		shouldDisposeColor = false;
-	}
-}
-
-void Mesh::SetMaterial(Material* material) {
-	this->material = material;
+void Mesh::Draw() {
+	DrawIndexMesh(indices, idxCount * 3, indexBufferId);
 }

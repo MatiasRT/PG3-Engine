@@ -9,6 +9,7 @@
 #include <Tilemap.h>
 #include <Camera.h>
 #include <Input.h>
+#include <Mesh.h>
 #include <iostream>
 class Game : public Gamebase {
 	int i;
@@ -29,6 +30,8 @@ class Game : public Gamebase {
 	Sprite * sp5;
 	Sprite * sp6;
 	Sprite * sp7;
+
+	Mesh * mesh;
 
 	Tilemap * tile;
 
