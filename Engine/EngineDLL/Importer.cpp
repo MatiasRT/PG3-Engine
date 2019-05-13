@@ -1,4 +1,7 @@
 #include "Importer.h"
+#include <assimp/mesh.h>
+#include <assimp/Importer.hpp>
+
 
 Header Importer::LoadBMP(const char * name) {
 
@@ -52,4 +55,23 @@ bool Importer::CheckFormat(const char * name, unsigned char header[], FILE * fil
 	}
 
 
+}
+
+bool Importer::LoadMesh(const char * name) {
+	// Release the previously loaded mesh (if it exists)
+	//Clear();
+
+	bool Ret = false;
+	Assimp::Importer Importer;
+
+	const aiScene* pScene = Importer.ReadFile(name, ASSIMP_LOAD_FLAGS);
+
+	if (pScene) {
+		//Ret = InitFromScene(pScene, name);
+	}
+	else {
+		printf("Error parsing '%s': '%s'\n", name, Importer.GetErrorString());
+	}
+
+	return Ret;
 }
