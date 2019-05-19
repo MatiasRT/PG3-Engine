@@ -1,7 +1,7 @@
 #include "Importer.h"
-#include <assimp/mesh.h>
 #include <assimp/Importer.hpp>
-
+#include <assimp/scene.h>
+#include <assert.h>
 
 Header Importer::LoadBMP(const char * name) {
 
@@ -57,7 +57,7 @@ bool Importer::CheckFormat(const char * name, unsigned char header[], FILE * fil
 
 }
 
-bool Importer::LoadMesh(const char * name) {
+void Importer::LoadMesh(const std::string& name, std::vector<MeshEntry> * mesh) {
 	// Release the previously loaded mesh (if it exists)
 	//Clear();
 
@@ -68,10 +68,43 @@ bool Importer::LoadMesh(const char * name) {
 
 	if (pScene) {
 		//Ret = InitFromScene(pScene, name);
+		//InitFromScene(pScene, name);
+		mesh->resize(pScene->mNumMeshes);
+
+		// Initialize the meshes in the scene one by one
+		for (unsigned int i = 0; i < mesh->size(); i++) {
+			const aiMesh* paiMesh = pScene->mMeshes[i];
+			InitMesh(i, paiMesh, mesh->at(i));
+		}
 	}
 	else {
 		printf("Error parsing '%s': '%s'\n", name, Importer.GetErrorString());
 	}
+}
 
-	return Ret;
+void Importer::InitMesh(unsigned int index, const aiMesh * paiMesh, MeshEntry mesh) {
+
+	const aiVector3D Zero3D(0.0f, 0.0f, 0.0f);
+
+	for (unsigned int i = 0; i < paiMesh->mNumVertices; i++) {
+		const aiVector3D* pPos = &(paiMesh->mVertices[i]);
+		const aiVector3D* pNormal = &(paiMesh->mNormals[i]);
+		const aiVector3D* pTexCoord = paiMesh->HasTextureCoords(0) ? &(paiMesh->mTextureCoords[0][i]) : &Zero3D;
+
+		mesh.vertices->push_back(pPos->x);
+		mesh.vertices->push_back(pPos->y);
+		mesh.vertices->push_back(pPos->z);
+		
+		mesh.texture->push_back(pTexCoord->x);
+		mesh.texture->push_back(pTexCoord->y);
+		mesh.texture->push_back(pTexCoord->z);
+	}
+
+	for (unsigned int i = 0; i < paiMesh->mNumFaces; i++) {
+		const aiFace& Face = paiMesh->mFaces[i];
+		assert(Face.mNumIndices == 3);
+		mesh.indices->push_back(Face.mIndices[0]);
+		mesh.indices->push_back(Face.mIndices[1]);
+		mesh.indices->push_back(Face.mIndices[2]);
+	}
 }
