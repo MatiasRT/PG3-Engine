@@ -99,7 +99,6 @@ void Importer::InitMesh(unsigned int index, const aiMesh * paiMesh, MeshEntry& m
 		
 		mesh.texture->push_back(pTexCoord->x);
 		mesh.texture->push_back(pTexCoord->y);
-		mesh.texture->push_back(pTexCoord->z);
 	}
 
 	for (unsigned int i = 0; i < paiMesh->mNumFaces; i++) {
