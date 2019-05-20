@@ -58,7 +58,7 @@ void Shape::DrawIndexMesh(unsigned int * indices, int idxCount, unsigned int ind
 	renderer->BeginDraw(1);
 	renderer->BindBuffer(bufferId, 0);								// Unimos el buffer con el buffer binding point
 	renderer->BindColorBuffer(colorBufferId, 1);
-	renderer->DrawElementBuffer(indices, idxCount, indexBufferId);			// El renderer dibuja el triangulo
+	renderer->DrawElementBuffer(idxCount, indexBufferId);			// El renderer dibuja el triangulo
 	renderer->EndDraw(0);													// Deja de dibujar
 	renderer->EndDraw(1);
 }

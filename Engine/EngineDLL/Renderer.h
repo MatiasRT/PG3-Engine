@@ -35,7 +35,7 @@ public:
 	unsigned int GenElementBuffer(unsigned int * indices, int size);
 	unsigned int UploadData(float width, float height, const void* data);
 	void DrawBuffer(int size, int type);
-	void DrawElementBuffer(unsigned int * indices, int size, unsigned int indexBuffer);
+	void DrawElementBuffer(int size, unsigned int indexBuffer);
 	void DestroyBuffer(unsigned int buffer);
 	void UpdateWVP();
 	void LoadIdentityMatrix();

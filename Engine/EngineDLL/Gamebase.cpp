@@ -10,7 +10,7 @@ bool Gamebase::Start() {
 	renderer = new Renderer();
 	if (!renderer->Start(window))
 		return false;
-	renderer->ClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+	renderer->ClearColor(0.0f, 0.0f, 1.0f, 0.0f);
 	renderer->SetPProjectionMatrix(glm::radians(45.0f)/*-10.0f*/, 4.0f / 3.0f, 0.1f, 100.0f);
 	//renderer->ChangeProjectionMatrix(perspective);				// Si quiero cambiar
 	lastFrame = 0;

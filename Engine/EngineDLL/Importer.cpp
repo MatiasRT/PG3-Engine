@@ -1,7 +1,5 @@
 #include "Importer.h"
-#include <assimp/Importer.hpp>
-#include <assimp/scene.h>
-#include <assert.h>
+
 
 Header Importer::LoadBMP(const char * name) {
 
@@ -82,9 +80,13 @@ void Importer::LoadMesh(const std::string& name, std::vector<MeshEntry> * mesh) 
 	}
 }
 
-void Importer::InitMesh(unsigned int index, const aiMesh * paiMesh, MeshEntry mesh) {
+void Importer::InitMesh(unsigned int index, const aiMesh * paiMesh, MeshEntry& mesh) {
 
 	const aiVector3D Zero3D(0.0f, 0.0f, 0.0f);
+
+	mesh.vertices = new std::vector<float>();
+	mesh.texture = new std::vector<float>();
+	mesh.indices = new std::vector<unsigned int>();
 
 	for (unsigned int i = 0; i < paiMesh->mNumVertices; i++) {
 		const aiVector3D* pPos = &(paiMesh->mVertices[i]);

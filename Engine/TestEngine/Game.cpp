@@ -80,9 +80,11 @@ bool Game::OnStart() {
 	sp7->SetAnimation(0, 63, 0.1f);
 
 
-	mesh = new Mesh(renderer);
-	mesh->SetMaterial(mat1);
+	mesh = new Mesh(renderer, "Weapon.fbx");
+	mesh->SetMaterial(mat2);
+	mesh->LoadMaterial("WeaponTexture.bmp");
 	mesh->SetPos(4, 0, 2);
+	//mesh->SetScale(0.1f, 0.1f, 0.1f);
 
 	cout<<"Game::OnStart()"<<endl;
 	return true;

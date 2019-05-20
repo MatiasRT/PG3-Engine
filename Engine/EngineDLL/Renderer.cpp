@@ -182,7 +182,7 @@ void Renderer::DrawBuffer(int size, int type) {											// Dibujamos en el buf
 	glDrawArrays(type, 0, size);														// Empezar desde el vértice 0S; 3 vértices en total -> 1 triángulo
 }
 
-void Renderer::DrawElementBuffer(unsigned int * indices, int size, unsigned int indexBuffer) {
+void Renderer::DrawElementBuffer(int size, unsigned int indexBuffer) {
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexBuffer);
 	glDrawElements(
 		GL_TRIANGLES,		// mode
