@@ -5,11 +5,11 @@ Mesh::Mesh(Renderer * renderer, const std::string& name) : Shape(renderer){
 	mesh = new std::vector<MeshEntry>();
 	meshInfo = new std::vector<MeshInfo>();
 
-	Importer::LoadMesh(name, mesh);
+	Importer::LoadMesh(name, mesh);										// Cargo el mesh
 
-	meshInfo->resize(mesh->size());
+	meshInfo->resize(mesh->size());										
 
-	for (int i = 0; i < mesh->size(); i++) {
+	for (int i = 0; i < mesh->size(); i++) {							// Cargo los atributos de meshInfo con lo recibido del importer
 		meshInfo->at(i).shouldDispose = false;
 		meshInfo->at(i).shouldDisposeTexture = false;
 		meshInfo->at(i).shouldDisposeIndices = false;
@@ -18,34 +18,42 @@ Mesh::Mesh(Renderer * renderer, const std::string& name) : Shape(renderer){
 		meshInfo->at(i).textureBufferId = -1;
 		meshInfo->at(i).indexBufferId = -1;
 
-		meshInfo->at(i).vtxCount = mesh->at(i).vertices->size();
-		meshInfo->at(i).vtxTextureCount = mesh->at(i).texture->size();
-		meshInfo->at(i).idxCount = mesh->at(i).indices->size();
+		meshInfo->at(i).vtxCount = mesh->at(i).vertices->size();		// Cargo la cantidad de vertices en el atributo de meshInfo
+		meshInfo->at(i).vtxTextureCount = mesh->at(i).texture->size();	// Cargo la cantidad vertices de texturas en el atributo de meshInfo
+		meshInfo->at(i).idxCount = mesh->at(i).indices->size();			// Cargo la cantidad de indices en el atributo de meshInfo
 
-		meshInfo->at(i).vertex = new float[meshInfo->at(i).vtxCount];
+		meshInfo->at(i).vertex = new float[meshInfo->at(i).vtxCount];	// Genero el vector de vertices segun lo guardado
 
 		for (int j = 0; j < meshInfo->at(i).vtxCount; j++) 
-			meshInfo->at(i).vertex[j] = mesh->at(i).vertices->at(j);
+			meshInfo->at(i).vertex[j] = mesh->at(i).vertices->at(j);	// Lo cargo
 		
 		SetVertices(meshInfo->at(i));
 
 
-		meshInfo->at(i).textureVertex = new float[meshInfo->at(i).vtxTextureCount];
+		meshInfo->at(i).textureVertex = new float[meshInfo->at(i).vtxTextureCount]; // Genero el vector de vertices de texturas segun lo guardado
 
 		for (int k = 0; k < meshInfo->at(i).vtxTextureCount; k++)
-			meshInfo->at(i).textureVertex[k] = mesh->at(i).texture->at(k);
+			meshInfo->at(i).textureVertex[k] = mesh->at(i).texture->at(k);	// Lo cargo
 
 		SetTextureVertices(meshInfo->at(i));
 
 
 
-		meshInfo->at(i).indices = new unsigned int[meshInfo->at(i).idxCount];
+		meshInfo->at(i).indices = new unsigned int[meshInfo->at(i).idxCount]; // Genero el vector de indices segun lo guardado
 
 		for (int l = 0; l < meshInfo->at(i).idxCount; l++)
-			meshInfo->at(i).indices[l] = mesh->at(i).indices->at(l);
+			meshInfo->at(i).indices[l] = mesh->at(i).indices->at(l);		// lo cargo
 
 
 		SetIndexVertices(meshInfo->at(i));
+	}
+}
+
+Mesh::~Mesh() {
+	for (int i = 0; i < mesh->size(); i++) {
+		delete meshInfo->at(i).vertex;
+		delete meshInfo->at(i).textureVertex;
+		delete meshInfo->at(i).indices;
 	}
 }
 
@@ -63,7 +71,7 @@ void Mesh::SetVertices(MeshInfo& mesh) {
 
 	mesh.shouldDispose = true;
 
-	mesh.bufferId = renderer->GenBuffer(mesh.vertex, sizeof(float) * mesh.vtxCount);
+	mesh.bufferId = renderer->GenBuffer(mesh.vertex, sizeof(float) * mesh.vtxCount);		// Genero el buffer con lo guardado en meshInfo, que fue sacado de lo recibido en importer
 }
 
 void Mesh::SetTextureVertices(MeshInfo & mesh) {
@@ -72,7 +80,7 @@ void Mesh::SetTextureVertices(MeshInfo & mesh) {
 
 	mesh.shouldDisposeTexture = true;
 
-	mesh.textureBufferId = renderer->GenBuffer(mesh.textureVertex, sizeof(float) * mesh.vtxTextureCount);
+	mesh.textureBufferId = renderer->GenBuffer(mesh.textureVertex, sizeof(float) * mesh.vtxTextureCount); // Genero el buffer de textura con lo guardado en meshInfo, que fue sacado de lo recibido en importer
 }
 
 void Mesh::SetIndexVertices(MeshInfo & mesh) {
@@ -80,7 +88,7 @@ void Mesh::SetIndexVertices(MeshInfo & mesh) {
 
 	mesh.shouldDisposeIndices = true;
 	
-	mesh.indexBufferId = renderer->GenElementBuffer(mesh.indices, sizeof(int) * mesh.idxCount);
+	mesh.indexBufferId = renderer->GenElementBuffer(mesh.indices, sizeof(int) * mesh.idxCount); // Genero el buffer de indices con lo guardado en meshInfo, que fue sacado de lo recibido en importer
 }
 
 void Mesh::DisposeVertices(bool shouldDispose, unsigned int bufferId) {

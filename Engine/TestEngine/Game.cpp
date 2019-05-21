@@ -84,7 +84,11 @@ bool Game::OnStart() {
 	mesh->SetMaterial(mat2);
 	mesh->LoadMaterial("sword.bmp");
 	mesh->SetPos(4, 0, 2);
-	//mesh->SetScale(1.0f, 1.0f, 1.0f);
+
+	mesh2 = new Mesh(renderer, "weapon.fbx");
+	mesh2->SetMaterial(mat2);
+	mesh2->LoadMaterial("weapon.bmp");
+	mesh2->SetPos(-10, 0, 20);
 
 	cout<<"Game::OnStart()"<<endl;
 	return true;
@@ -180,6 +184,7 @@ void Game::OnDraw() {
 	sp6->Draw();
 	sp7->Draw();*/
 	mesh->Draw();
+	mesh2->Draw();
 }
 
 bool Game::OnStop() {
@@ -194,6 +199,7 @@ bool Game::OnStop() {
 	delete mat2;
 	delete tile;
 	delete mesh;
+	delete mesh2;
 	delete camera;
 	cout << "Game::OnStop()" << endl;
 	return false;

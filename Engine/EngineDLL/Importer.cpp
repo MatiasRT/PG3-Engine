@@ -62,7 +62,7 @@ void Importer::LoadMesh(const std::string& name, std::vector<MeshEntry> * mesh) 
 	bool Ret = false;
 	Assimp::Importer Importer;
 
-	const aiScene* pScene = Importer.ReadFile(name, ASSIMP_LOAD_FLAGS);
+	const aiScene* pScene = Importer.ReadFile(name, ASSIMP_LOAD_FLAGS);		// Creo una escena de assimp para poder poner los modelos ahi.
 
 	if (pScene) {
 		//Ret = InitFromScene(pScene, name);
@@ -72,7 +72,7 @@ void Importer::LoadMesh(const std::string& name, std::vector<MeshEntry> * mesh) 
 		// Initialize the meshes in the scene one by one
 		for (unsigned int i = 0; i < mesh->size(); i++) {
 			const aiMesh* paiMesh = pScene->mMeshes[i];
-			InitMesh(i, paiMesh, mesh->at(i));
+			InitMesh(i, paiMesh, mesh->at(i));								// Inicio los meshes en la escena creada.
 		}
 	}
 	else {
@@ -93,18 +93,18 @@ void Importer::InitMesh(unsigned int index, const aiMesh * paiMesh, MeshEntry& m
 		const aiVector3D* pNormal = &(paiMesh->mNormals[i]);
 		const aiVector3D* pTexCoord = paiMesh->HasTextureCoords(0) ? &(paiMesh->mTextureCoords[0][i]) : &Zero3D;
 
-		mesh.vertices->push_back(pPos->x);
+		mesh.vertices->push_back(pPos->x);							// Cargo el vector de vertices con los vertices del mesh
 		mesh.vertices->push_back(pPos->y);
 		mesh.vertices->push_back(pPos->z);
 		
-		mesh.texture->push_back(pTexCoord->x);
+		mesh.texture->push_back(pTexCoord->x);						// Cargo el vector de tecturas con coordenadas de texturas del mesh
 		mesh.texture->push_back(pTexCoord->y);
 	}
 
 	for (unsigned int i = 0; i < paiMesh->mNumFaces; i++) {
 		const aiFace& Face = paiMesh->mFaces[i];
 		assert(Face.mNumIndices == 3);
-		mesh.indices->push_back(Face.mIndices[0]);
+		mesh.indices->push_back(Face.mIndices[0]);					// Cargo el vector de indices con los indices del mesh
 		mesh.indices->push_back(Face.mIndices[1]);
 		mesh.indices->push_back(Face.mIndices[2]);
 	}

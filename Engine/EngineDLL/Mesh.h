@@ -30,7 +30,7 @@ class ENGINEDLL_API Mesh : public Shape {
 	
 public:
 	Mesh(Renderer * renderer, const std::string& name);
-	~Mesh() { /*DisposeIndex();*/ };
+	~Mesh();
 
 	void LoadMaterial(const char * name);
 

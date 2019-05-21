@@ -32,6 +32,7 @@ class Game : public Gamebase {
 	Sprite * sp7;
 
 	Mesh * mesh;
+	Mesh * mesh2;
 
 	Tilemap * tile;
 
