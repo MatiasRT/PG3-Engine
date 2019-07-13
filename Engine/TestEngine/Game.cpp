@@ -80,14 +80,14 @@ bool Game::OnStart() {
 	sp7->SetAnimation(0, 63, 0.1f);
 
 
-	mesh = new Mesh(renderer, "sword.fbx");
+	mesh = new Mesh(renderer, "sword.fbx", "sword.bmp");
 	mesh->SetMaterial(mat2);
-	mesh->LoadMaterial("sword.bmp");
+	//mesh->LoadMaterial("sword.bmp");
 	mesh->SetPos(4, 0, 2);
 
-	mesh2 = new Mesh(renderer, "weapon.fbx");
+	mesh2 = new Mesh(renderer, "weapon.fbx", "weapon.bmp");
 	mesh2->SetMaterial(mat2);
-	mesh2->LoadMaterial("weapon.bmp");
+	//mesh2->LoadMaterial("weapon.bmp");
 	mesh2->SetPos(-10, 0, 20);
 
 	cout<<"Game::OnStart()"<<endl;

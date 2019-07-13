@@ -1,11 +1,11 @@
 #include "Mesh.h"
 
-Mesh::Mesh(Renderer * renderer, const std::string& name) : Component(renderer){
+Mesh::Mesh(Renderer * renderer, const std::string& name, const char * name2) : Component(renderer){
 
 	type = ComponentsType::MeshRenderType;
 
-	mesh = new std::vector<MeshEntry>();
 	meshInfo = new std::vector<MeshInfo>();
+	mesh = new std::vector<MeshEntry>();
 
 	Importer::LoadMesh(name, mesh);										// Cargo el mesh
 
@@ -29,7 +29,7 @@ Mesh::Mesh(Renderer * renderer, const std::string& name) : Component(renderer){
 		for (int j = 0; j < meshInfo->at(i).vtxCount; j++) 
 			meshInfo->at(i).vertex[j] = mesh->at(i).vertices->at(j);	// Lo cargo
 		
-		SetVertices(meshInfo->at(i));
+		SetVertices(i);
 
 
 		meshInfo->at(i).textureVertex = new float[meshInfo->at(i).vtxTextureCount]; // Genero el vector de vertices de texturas segun lo guardado
@@ -37,7 +37,7 @@ Mesh::Mesh(Renderer * renderer, const std::string& name) : Component(renderer){
 		for (int k = 0; k < meshInfo->at(i).vtxTextureCount; k++)
 			meshInfo->at(i).textureVertex[k] = mesh->at(i).texture->at(k);	// Lo cargo
 
-		SetTextureVertices(meshInfo->at(i));
+		SetTextureVertices(i);
 
 
 
@@ -47,27 +47,71 @@ Mesh::Mesh(Renderer * renderer, const std::string& name) : Component(renderer){
 			meshInfo->at(i).indices[l] = mesh->at(i).indices->at(l);		// lo cargo
 
 
-		SetIndexVertices(meshInfo->at(i));
+		SetIndexVertices(i);
+
+		meshInfo->at(i).material = new Material();
+		meshInfo->at(i).programId = meshInfo->at(i).material->LoadShaders("VertexTexture.glsl", "FragmentTexture.glsl");
+		LoadMaterial(name2, meshInfo->at(i).textureId, meshInfo->at(i).material);
 	}
 }
 
 Mesh::~Mesh() {
 	for (int i = 0; i < mesh->size(); i++) {
-		delete meshInfo->at(i).vertex;
-		delete meshInfo->at(i).textureVertex;
-		delete meshInfo->at(i).indices;
+		delete[] meshInfo->at(i).vertex;
+		delete[] meshInfo->at(i).textureVertex;
+		delete[] meshInfo->at(i).indices;
+		delete meshInfo->at(i).material;
 	}
+	delete mesh;
+	delete meshInfo;
 }
 
-void Mesh::LoadMaterial(const char * name) {
+/*void Mesh::LoadMaterial(const char * name) {
 
 	header = Importer::LoadBMP(name);
 	textureId = renderer->UploadData(header.width, header.height, header.data);
 	material->BindTexture();
 	
+}*/
+
+void Mesh::LoadMaterial(const char * name, unsigned int & textureId, Material * material) {
+	header = Importer::LoadBMP(name);
+	textureId = renderer->UploadData(header.width, header.height, header.data);
+	material->BindTexture();
 }
 
-void Mesh::SetVertices(MeshInfo& mesh) {
+void Mesh::SetVertices(int index) {
+	//Dispose();
+
+	meshInfo->at(index).shouldDispose = true;
+	meshInfo->at(index).bufferId = renderer->GenBuffer(meshInfo->at(index).vertex,
+		sizeof(float)* meshInfo->at(index).vtxCount);
+}
+
+void Mesh::SetTextureVertices(int index) {
+	DisposeTexture();
+	meshInfo->at(index).shouldDisposeTexture = true;
+	meshInfo->at(index).textureBufferId = renderer->GenBuffer(meshInfo->at(index).textureVertex,
+		sizeof(float)* meshInfo->at(index).vtxTextureCount);
+}
+
+void Mesh::SetIndexVertices(int index) {
+	DisposeIndex();
+
+	meshInfo->at(index).shouldDisposeIndices = true;
+	meshInfo->at(index).indexBufferId = renderer->GenElementBuffer(meshInfo->at(index).indices,
+		sizeof(int) * meshInfo->at(index).idxCount);
+}
+
+void Mesh::DisposeIndex() {
+
+}
+
+void Mesh::DisposeTexture() {
+
+}
+
+/*void Mesh::SetVertices(MeshInfo& mesh) {
 
 	DisposeVertices(mesh.shouldDispose, mesh.bufferId);
 
@@ -112,7 +156,7 @@ void Mesh::DisposeIndex(bool shouldDisposeIndices, unsigned int indexBufferId) {
 		renderer->DestroyBuffer(indexBufferId);
 		shouldDisposeIndices = false;
 	}
-}
+}*/
 
 void Mesh::Draw() {
 
@@ -124,7 +168,7 @@ void Mesh::Draw() {
 			material->Bind();
 			material->SetMatrixProperty(renderer->GetWVP());
 		}
-		renderer->BindTexture(textureId, meshInfo->at(i).textureBufferId);
+		renderer->BindTexture(meshInfo->at(i).textureId, meshInfo->at(i).textureBufferId);
 		renderer->BeginDraw(0);																									// Le decimos al renderer que comience a dibujar
 		renderer->BeginDraw(1);
 		renderer->BindBuffer(meshInfo->at(i).bufferId, 0);																		// Unimos el buffer con el buffer binding point
