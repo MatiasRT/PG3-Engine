@@ -2,12 +2,19 @@
 #ifndef COMPONENT_H
 #define COMPONENT_H
 #include "Exports.h"
+#include "Definitions.h"
+#include<glm\gtc\matrix_transform.hpp>
+#include<glm\glm.hpp>
+
 class ENGINEDLL_API Component {
+	ComponentsType type;
 public:
-	Component();
+	Component(ComponentsType type);
 	~Component();
-	void Update();
+	
+	void Update(float deltaTime, glm::mat4 ViewMatrix);
 	void Draw();
-	void Start();
+
+	ComponentsType GetComponentType() { return type; }
 };
 #endif

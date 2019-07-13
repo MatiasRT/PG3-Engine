@@ -243,3 +243,8 @@ void Renderer::SetViewMatrix(glm::vec3 eye, glm::vec3 camera, glm::vec3 upAxis) 
 	WorldMatrix = glm::mat4(1.0f);
 	UpdateWVP();
 }
+
+void Renderer::SetViewMatrix(glm::mat4 viewMatrix) {
+	ViewMatrix = viewMatrix;
+	UpdateWVP();
+}

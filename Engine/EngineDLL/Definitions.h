@@ -31,3 +31,12 @@ struct MeshEntry {
 	std::vector<unsigned int>* indices;
 	std::vector<float>* texture;
 };
+
+enum ComponentsType {
+	MeshRenderType = 0,
+	CamerasType,
+	ColliderType,
+	ScriptType,
+	TransformType,
+	NullComponentType
+};

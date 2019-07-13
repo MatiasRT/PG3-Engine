@@ -56,4 +56,7 @@ public:
 	void SetPProjectionMatrix(float fovY, float aspect, float zNear, float zFar);
 	void ChangeProjectionMatrix(CameraType camera);
 	void SetViewMatrix(glm::vec3 eye, glm::vec3 camera, glm::vec3 upAxis);
+
+	void SetViewMatrix(glm::mat4 viewMatrix);
+	glm::mat4 GetViewMatrix() { return ViewMatrix; }
 };

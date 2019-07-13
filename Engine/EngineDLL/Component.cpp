@@ -1,24 +1,17 @@
 #include "Component.h"
 
-
-
-Component::Component()
-{
+Component::Component(ComponentsType _type) {
+	type = _type;
 }
 
+Component::~Component() {
 
-Component::~Component()
-{
 }
 
-void Component::Update()
-{
+void Component::Update(float deltaTime, glm::mat4 ViewMatrix) {
+
 }
 
-void Component::Draw()
-{
-}
+void Component::Draw() {
 
-void Component::Start()
-{
 }
