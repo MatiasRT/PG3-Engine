@@ -1,8 +1,7 @@
 #ifndef MESH_H
 #define MESH_H
-#include "Shape.h"
-#include "Material.h"
 #include "Importer.h"
+#include "Component.h"
 
 struct MeshInfo {
 	unsigned int bufferId;
@@ -19,7 +18,7 @@ struct MeshInfo {
 	unsigned int * indices;
 };
 
-class ENGINEDLL_API Mesh : public Shape {
+class ENGINEDLL_API Mesh : public Component {
 
 	Header header;
 
@@ -27,11 +26,14 @@ class ENGINEDLL_API Mesh : public Shape {
 	std::vector<MeshEntry>* mesh;
 
 	unsigned int textureId;
+
+	Material * material;
 	
 public:
 	Mesh(Renderer * renderer, const std::string& name);
 	~Mesh();
 
+	void SetMaterial(Material* material);
 	void LoadMaterial(const char * name);
 
 	void SetVertices(MeshInfo& mesh);

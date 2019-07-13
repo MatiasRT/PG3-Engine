@@ -5,8 +5,10 @@
 #include "Exports.h"
 #include "Entity.h"
 #include "Renderer.h"
+#include "Component.h"
+
 using namespace std;
-class ENGINEDLL_API Camera {
+class ENGINEDLL_API Camera : public Component {
 	
 	Renderer* render;
 	glm::mat4 ViewMatrix;

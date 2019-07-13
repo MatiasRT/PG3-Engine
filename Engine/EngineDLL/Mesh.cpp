@@ -1,6 +1,8 @@
 #include "Mesh.h"
 
-Mesh::Mesh(Renderer * renderer, const std::string& name) : Shape(renderer){
+Mesh::Mesh(Renderer * renderer, const std::string& name) : Component(renderer){
+
+	type = ComponentsType::MeshRenderType;
 
 	mesh = new std::vector<MeshEntry>();
 	meshInfo = new std::vector<MeshInfo>();
@@ -131,4 +133,8 @@ void Mesh::Draw() {
 		renderer->EndDraw(0);																									// Deja de dibujar
 		renderer->EndDraw(1);
 	}
+}
+
+void Mesh::SetMaterial(Material* material) {
+	this->material = material;
 }

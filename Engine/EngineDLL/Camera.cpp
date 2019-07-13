@@ -1,6 +1,6 @@
 #include "Camera.h"
 
-Camera::Camera(Renderer * renderer) {
+Camera::Camera(Renderer * renderer) : Component(renderer){
 	forward = glm::vec4(0, 0, 1, 0);
 	right = glm::vec4(1, 0, 0, 0);
 	up = glm::vec4(0, 1, 0, 0);

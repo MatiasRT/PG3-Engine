@@ -7,7 +7,7 @@
 #include "Definitions.h"
 #include <list>
 class ENGINEDLL_API GameNode {
-	std::list<GameNode> * nodeChild;
+	std::list<GameNode*> * nodeChild;
 	std::list<Component> * components;
 
 	Renderer * renderer;
@@ -17,7 +17,7 @@ public:
 	GameNode(Renderer * render);
 	~GameNode();
 
-	void AddChild(GameNode node);
+	void AddChild(GameNode* node);
 	void AddComponent(Component comp);
 
 	void RemoveChild(int index);

@@ -1,7 +1,7 @@
 #include "Component.h"
 
-Component::Component(ComponentsType _type) {
-	type = _type;
+Component::Component(Renderer * renderer) : Entity(renderer) {
+	type = ComponentsType::NullComponentType;
 }
 
 Component::~Component() {
