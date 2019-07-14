@@ -63,13 +63,8 @@ void Importer::LoadMesh(const char * fbxFile, const char * txtFile, GameNode * f
 	// propably to request more postprocessing than we do in this example.
 	const aiScene* pScene = importer.ReadFile(fbxFile, ASSIMP_LOAD_FLAGS);
 
-	// If the import failed, report it
-	if (!pScene) {
-		return;
-	}
-	if (!pScene->HasMeshes()) {
-		return;
-	}
+	if (!pScene) 
+		printf("Error parsing '%s': '%s'\n", fbxFile, importer.GetErrorString());
 	
 	ProcessNodes(txtFile, father, pScene->mRootNode, pScene, renderer);
 }
@@ -83,9 +78,8 @@ void Importer::ProcessNodes(const char * txtFile, GameNode* father, aiNode* node
 		father->AddChild(child);
 	}
 
-	for (int i = 0; i < (int)node->mNumChildren; i++) {
+	for (int i = 0; i < (int)node->mNumChildren; i++) 
 		ProcessNodes(txtFile, father, node->mChildren[i], scene, renderer);
-	}
 }
 
 void Importer::InitMesh(const aiMesh* paiMesh, Mesh * mesh) {
@@ -101,10 +95,11 @@ void Importer::InitMesh(const aiMesh* paiMesh, Mesh * mesh) {
 		const aiVector3D* pNormal = &(paiMesh->mNormals[i]);
 		const aiVector3D* pTexCoord = paiMesh->HasTextureCoords(0) ? &(paiMesh->mTextureCoords[0][i]) : &Zero3D;
 
-		meshD->vertices->push_back(pPos->y);
+		meshD->vertices->push_back(pPos->y);				// Cargo el vector de vertices con los vertices del mesh
 		meshD->vertices->push_back(pPos->x);
 		meshD->vertices->push_back(pPos->z);
-		meshD->textures->push_back(pTexCoord->x);
+
+		meshD->textures->push_back(pTexCoord->x);			// Cargo el vector de tecturas con coordenadas de texturas del mesh
 		meshD->textures->push_back(pTexCoord->y);
 
 	}
@@ -112,7 +107,7 @@ void Importer::InitMesh(const aiMesh* paiMesh, Mesh * mesh) {
 	for (unsigned int i = 0; i < paiMesh->mNumFaces; i++) {
 		const aiFace& Face = paiMesh->mFaces[i];
 		assert(Face.mNumIndices == 3);
-		meshD->indices->push_back(Face.mIndices[0]);
+		meshD->indices->push_back(Face.mIndices[0]);		// Cargo el vector de indices con los indices del mesh
 		meshD->indices->push_back(Face.mIndices[1]);
 		meshD->indices->push_back(Face.mIndices[2]);
 	}
