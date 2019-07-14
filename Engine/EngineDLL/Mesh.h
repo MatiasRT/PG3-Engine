@@ -9,7 +9,7 @@ struct MeshInfo {
 	unsigned int textureBufferId;
 	unsigned int indexBufferId;
 	unsigned int textureId;
-	bool shouldDispose;
+	bool shouldDisposeVertices;
 	bool shouldDisposeIndices;
 	bool shouldDisposeTexture;
 	unsigned int vtxCount;
@@ -31,17 +31,14 @@ class ENGINEDLL_API Mesh : public Component {
 	const char* textureFile;
 	MeshData* meshData;
 
-	void SetTextureVertex();
-	void SetIndexVertex();
-	void SetVertices();
-	void DisposeIndex();
+	void DisposeVertices();
+	void DisposeIndices();
 	void DisposeTexture();
 public:
 	Mesh(Renderer * renderer, const char* txtFile);
 	~Mesh();
 
 	void SetMeshData(MeshData * meshD);
-	void LoadMaterial(const char * bmpFile, unsigned int &textureId, Material * material);
 	void Draw() override;
 	
 	MeshData * GetMeshData() { return meshData; };
