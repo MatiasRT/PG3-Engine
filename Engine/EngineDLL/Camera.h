@@ -12,13 +12,16 @@ class ENGINEDLL_API Camera : public Component {
 	
 	Renderer* render;
 	glm::mat4 ViewMatrix;
+
+	CameraType camType;
+
 	glm::vec4 forward;
 	glm::vec4 right;
 	glm::vec4 up;
 	glm::vec4 pos;
 
 public:
-	Camera(Renderer * renderer);
+	Camera(Renderer * rend);
 	~Camera() {};
 	
 	void Walk(float xAxis, float zAxis);

@@ -10,15 +10,11 @@
 
 class ENGINEDLL_API Component : public Entity {
 public:
-
 	ComponentsType type;
 
 	Component(Renderer * renderer);
-	~Component();
-	
-	void Update(float deltaTime, glm::mat4 ViewMatrix);
-	void Draw();
-
-	//ComponentsType GetComponentType() { return type; }
+	~Component() { };
+	void Draw() { };
+	void Update() { };
 };
 #endif

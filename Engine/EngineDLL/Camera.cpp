@@ -1,13 +1,15 @@
 #include "Camera.h"
 
-Camera::Camera(Renderer * renderer) : Component(renderer){
+Camera::Camera(Renderer * rend) : Component(renderer){
+	type: ComponentsType::CamerasType;
+
 	forward = glm::vec4(0, 0, 1, 0);
 	right = glm::vec4(1, 0, 0, 0);
 	up = glm::vec4(0, 1, 0, 0);
 
 	pos = glm::vec4(0, 0, 0, 1);
 
-	render = renderer;
+	render = rend;
 	ViewMatrix = glm::lookAt(
 		(glm::vec3)pos,
 		(glm::vec3)(pos + forward),

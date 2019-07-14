@@ -3,12 +3,15 @@
 #define ASSIMP_LOAD_FLAGS (aiProcess_Triangulate | aiProcess_GenSmoothNormals | aiProcess_JoinIdenticalVertices)
 #include "Exports.h"
 #include "Definitions.h"
+#include "GameNode.h"
 #include <fstream>
 #include <vector>
 #include "assimp/Importer.hpp"
 #include "assimp/scene.h"
 #include "assert.h"
 #include "assimp/postprocess.h"
+
+class Mesh;
 
 struct Header {
 	unsigned int dataPos;
@@ -18,14 +21,15 @@ struct Header {
 };
 
 static class ENGINEDLL_API Importer {
-
-	static void InitMesh(unsigned int index, const aiMesh * paiMesh, MeshEntry& mesh);
+	
+	static void InitMesh(const aiMesh* paiMesh, Mesh* mesh);
+	static void ProcessNodes(const char* txtFile, GameNode* father, aiNode* node, const aiScene* scene, Renderer* renderer);
 
 public:
 
 	static Header LoadBMP(const char * name);
 	static bool CheckFormat(const char * name, unsigned char header[], FILE * file);
 
-	static void LoadMesh(const std::string& name, std::vector<MeshEntry> * mesh);
+	static void LoadMesh(const char * fbxFile, const char * txtFile, GameNode * father, Renderer * renderer);
 };
 #endif

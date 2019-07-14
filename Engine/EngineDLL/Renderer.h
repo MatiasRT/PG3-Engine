@@ -7,6 +7,7 @@
 #include <vector>
 #include <iostream>
 using namespace std;
+
 class ENGINEDLL_API Renderer {
 	unsigned int VertexArrayID;
 	Window* window;
@@ -57,6 +58,13 @@ public:
 	void ChangeProjectionMatrix(CameraType camera);
 	void SetViewMatrix(glm::vec3 eye, glm::vec3 camera, glm::vec3 upAxis);
 
+	void SetWorldMatrix(glm::mat4 worldMatrix);
 	void SetViewMatrix(glm::mat4 viewMatrix);
-	glm::mat4 GetViewMatrix() { return ViewMatrix; }
+	void SetProjectionMatrix(glm::mat4 projectionMatrix);
+
+	glm::mat4 GetViewMatrix() { return ViewMatrix; };
+	glm::mat4 GetWorldMatrix() { return WorldMatrix; };
+	glm::mat4 GetProjectionMatrix() { return ProjectionMatrix; };
+
+	void BindBuffer(unsigned int atribID, unsigned int vtxBuffer, unsigned int size);
 };

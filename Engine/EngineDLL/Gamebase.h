@@ -2,6 +2,7 @@
 #include "Renderer.h"
 #include "Window.h"
 #include "TypeDef.h"
+#include "GameNode.h"
 #include <GLFW/glfw3.h>
 #include <iostream>
 using namespace std;
@@ -16,6 +17,8 @@ public:
 	bool Stop();
 	void Loop();
 	void Time();
+	void SetSceneNode(GameNode * sceneN);
+	GameNode * sceneNode;
 protected:
 	Renderer * renderer;
 	virtual bool OnStart() = 0;

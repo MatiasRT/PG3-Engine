@@ -244,7 +244,29 @@ void Renderer::SetViewMatrix(glm::vec3 eye, glm::vec3 camera, glm::vec3 upAxis) 
 	UpdateWVP();
 }
 
+void Renderer::SetWorldMatrix(glm::mat4 worldMatrix) {
+	WorldMatrix = worldMatrix;
+	UpdateWVP();
+}
+
 void Renderer::SetViewMatrix(glm::mat4 viewMatrix) {
 	ViewMatrix = viewMatrix;
 	UpdateWVP();
+}
+
+void Renderer::SetProjectionMatrix(glm::mat4 projectionMatrix) {
+	ProjectionMatrix = projectionMatrix;
+	UpdateWVP();
+}
+
+void Renderer::BindBuffer(unsigned int atribID, unsigned int vtxBuffer, unsigned int size) {				// Binds a buffer object to the specified buffer binding point
+	glBindBuffer(GL_ARRAY_BUFFER, vtxBuffer);
+	glVertexAttribPointer(
+		atribID,            // debe corresponder en el shader.
+		size,               // tamaño
+		GL_FLOAT,           // tipo
+		GL_FALSE,           // normalizado?
+		0,                  // Paso
+		(void*)0            // desfase del buffer
+	);
 }

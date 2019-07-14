@@ -1,5 +1,5 @@
 #include "Importer.h"
-
+#include "Mesh.h"
 
 Header Importer::LoadBMP(const char * name) {
 
@@ -55,57 +55,67 @@ bool Importer::CheckFormat(const char * name, unsigned char header[], FILE * fil
 
 }
 
-void Importer::LoadMesh(const std::string& name, std::vector<MeshEntry> * mesh) {
-	// Release the previously loaded mesh (if it exists)
-	//Clear();
+void Importer::LoadMesh(const char * fbxFile, const char * txtFile, GameNode * father, Renderer * renderer) {
+	// Create an instance of the Importer class
+	Assimp::Importer importer;
+	// And have it read the given file with some example postprocessing
+	// Usually - if speed is not the most important aspect for you - you'll 
+	// propably to request more postprocessing than we do in this example.
+	const aiScene* pScene = importer.ReadFile(fbxFile, ASSIMP_LOAD_FLAGS);
 
-	bool Ret = false;
-	Assimp::Importer Importer;
-
-	const aiScene* pScene = Importer.ReadFile(name, ASSIMP_LOAD_FLAGS);		// Creo una escena de assimp para poder poner los modelos ahi.
-
-	if (pScene) {
-		//Ret = InitFromScene(pScene, name);
-		//InitFromScene(pScene, name);
-		mesh->resize(pScene->mNumMeshes);
-
-		// Initialize the meshes in the scene one by one
-		for (unsigned int i = 0; i < mesh->size(); i++) {
-			const aiMesh* paiMesh = pScene->mMeshes[i];
-			InitMesh(i, paiMesh, mesh->at(i));								// Inicio los meshes en la escena creada.
-		}
+	// If the import failed, report it
+	if (!pScene) {
+		return;
 	}
-	else {
-		printf("Error parsing '%s': '%s'\n", name, Importer.GetErrorString());
+	if (!pScene->HasMeshes()) {
+		return;
+	}
+	
+	ProcessNodes(txtFile, father, pScene->mRootNode, pScene, renderer);
+}
+
+void Importer::ProcessNodes(const char * txtFile, GameNode* father, aiNode* node, const aiScene* scene, Renderer* renderer) {
+	for (int i = 0; i < (int)node->mNumMeshes; i++) {
+		Mesh * mesh = new Mesh(renderer, txtFile);
+		InitMesh(scene->mMeshes[node->mMeshes[i]], mesh);
+		GameNode * child = new GameNode(renderer);
+		child->AddComponent((Component*)mesh);
+		father->AddChild(child);
+	}
+
+	for (int i = 0; i < (int)node->mNumChildren; i++) {
+		ProcessNodes(txtFile, father, node->mChildren[i], scene, renderer);
 	}
 }
 
-void Importer::InitMesh(unsigned int index, const aiMesh * paiMesh, MeshEntry& mesh) {
+void Importer::InitMesh(const aiMesh* paiMesh, Mesh * mesh) {
+	MeshData * meshD = mesh->GetMeshData();
+	meshD->vertices = new std::vector<float>();
+	meshD->textures = new std::vector<float>();
+	meshD->indices = new std::vector<unsigned int>();
 
 	const aiVector3D Zero3D(0.0f, 0.0f, 0.0f);
-
-	mesh.vertices = new std::vector<float>();
-	mesh.texture = new std::vector<float>();
-	mesh.indices = new std::vector<unsigned int>();
 
 	for (unsigned int i = 0; i < paiMesh->mNumVertices; i++) {
 		const aiVector3D* pPos = &(paiMesh->mVertices[i]);
 		const aiVector3D* pNormal = &(paiMesh->mNormals[i]);
 		const aiVector3D* pTexCoord = paiMesh->HasTextureCoords(0) ? &(paiMesh->mTextureCoords[0][i]) : &Zero3D;
 
-		mesh.vertices->push_back(pPos->x);							// Cargo el vector de vertices con los vertices del mesh
-		mesh.vertices->push_back(pPos->y);
-		mesh.vertices->push_back(pPos->z);
-		
-		mesh.texture->push_back(pTexCoord->x);						// Cargo el vector de tecturas con coordenadas de texturas del mesh
-		mesh.texture->push_back(pTexCoord->y);
+		meshD->vertices->push_back(pPos->y);
+		meshD->vertices->push_back(pPos->x);
+		meshD->vertices->push_back(pPos->z);
+		meshD->textures->push_back(pTexCoord->x);
+		meshD->textures->push_back(pTexCoord->y);
+
 	}
 
 	for (unsigned int i = 0; i < paiMesh->mNumFaces; i++) {
 		const aiFace& Face = paiMesh->mFaces[i];
 		assert(Face.mNumIndices == 3);
-		mesh.indices->push_back(Face.mIndices[0]);					// Cargo el vector de indices con los indices del mesh
-		mesh.indices->push_back(Face.mIndices[1]);
-		mesh.indices->push_back(Face.mIndices[2]);
+		meshD->indices->push_back(Face.mIndices[0]);
+		meshD->indices->push_back(Face.mIndices[1]);
+		meshD->indices->push_back(Face.mIndices[2]);
 	}
+
+	mesh->SetMeshData(meshD);
 }

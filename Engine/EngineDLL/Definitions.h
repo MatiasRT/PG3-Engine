@@ -26,10 +26,10 @@ enum CameraType {
 	perspective
 };
 
-struct MeshEntry {
+struct MeshData {
 	std::vector<float>* vertices;
 	std::vector<unsigned int>* indices;
-	std::vector<float>* texture;
+	std::vector<float>* textures;
 };
 
 enum ComponentsType {

@@ -6,26 +6,27 @@
 #include "Component.h"
 #include "Definitions.h"
 #include <list>
-class ENGINEDLL_API GameNode {
-	std::list<GameNode*> * nodeChild;
-	std::list<Component> * components;
+using namespace std;
 
+class ENGINEDLL_API GameNode : public Entity {
 	Renderer * renderer;
 
-	glm::mat4 ViewMatrix;
+	vector<Component*>* components;
+	vector<GameNode*>* nodes;
 public:
 	GameNode(Renderer * render);
-	~GameNode();
-
-	void AddChild(GameNode* node);
-	void AddComponent(Component comp);
-
-	void RemoveChild(int index);
+	~GameNode() { };
+	void AddComponent(Component * comp);
 	void RemoveComponent(int index);
+	Component* GetComponent(int index);
+	Component* GetComponent(ComponentsType type);
+	void RemoveChild(int index);
+	void AddChild(GameNode * node);
+	vector<GameNode*>* GetChilds();
+	vector<Component*>* GetComponents();
 
-	Component GetComponent(ComponentsType type);
-
-	void Update(float deltaTime, glm::mat4 ViewMatrix);
+	GameNode * GetNode(int index);
+	void Update();
 	void Draw();
 };
 #endif
