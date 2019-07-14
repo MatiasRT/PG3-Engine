@@ -16,17 +16,21 @@ class ENGINEDLL_API GameNode : public Entity {
 public:
 	GameNode(Renderer * render);
 	~GameNode() { };
-	void AddComponent(Component * comp);
-	void RemoveComponent(int index);
-	Component* GetComponent(int index);
-	Component* GetComponent(ComponentsType type);
-	void RemoveChild(int index);
-	void AddChild(GameNode * node);
-	vector<GameNode*>* GetChilds();
-	vector<Component*>* GetComponents();
 
-	GameNode * GetNode(int index);
 	void Update();
 	void Draw();
+
+	void AddComponent(Component * comp);
+	void AddChild(GameNode * node);
+	
+	void RemoveChild(int index);
+	void RemoveComponent(int index);
+
+	vector<GameNode*>* GetChilds();
+
+	GameNode * GetNode(int index);
+	Component* GetComponent(int index);
+	Component* GetComponent(ComponentsType type);
+	vector<Component*>* GetComponents();
 };
 #endif

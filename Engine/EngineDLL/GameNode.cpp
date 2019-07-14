@@ -1,22 +1,43 @@
 #include "GameNode.h"
 
 GameNode::GameNode(Renderer * render) : Entity(render) {
-	cout << "Node" << endl;
 	renderer = render;
 	worldMatrix = renderer->GetViewMatrix();
 	nodes = new vector<GameNode*>();
 	components = new vector<Component*>();
 }
 
-void GameNode::AddComponent(Component * comp) {
-	components->push_back(comp);
+void GameNode::Update() {
+	for (int i=0; i<components->size(); i++)
+		components->at(i)->Update();
+
+	for (int j=0; j<nodes->size(); j++)
+		nodes->at(j)->Update();
 }
 
-Component * GameNode::GetComponent(ComponentsType type) {
-	for (size_t i = 0; i < components->size(); i++) {
-		if (components->at(i)->type == type)
-			return components->at(i);
-	}
+void GameNode::Draw() {
+	//me guardo la MVP anterior
+	glm::mat4 actualWM = renderer->GetWorldMatrix();
+	glm::mat4 actualVM = renderer->GetViewMatrix();
+	glm::mat4 actualPM = renderer->GetProjectionMatrix();
+
+	//multiplico
+	renderer->SetWorldMatrix(actualWM * worldMatrix);
+
+	for (int i = 0; i < components->size(); i++)
+		components->at(i)->Draw();
+
+	for (int j = 0; j < nodes->size(); j++)
+		nodes->at(j)->Draw();
+
+	//las vuelvo a setear
+	renderer->SetViewMatrix(actualVM);
+	renderer->SetWorldMatrix(actualWM);
+	renderer->SetProjectionMatrix(actualPM);
+}
+
+void GameNode::AddComponent(Component * comp) {
+	components->push_back(comp);
 }
 
 void GameNode::RemoveComponent(int index) {
@@ -28,12 +49,6 @@ void GameNode::RemoveComponent(int index) {
 		}
 		i++;
 	}
-}
-
-Component * GameNode::GetComponent(int index) {
-	if (index > components->size())
-		return components->at(components->size() - 1);
-	return components->at(index);
 }
 
 void GameNode::RemoveChild(int index) {
@@ -57,44 +72,25 @@ vector<GameNode*>* GameNode::GetChilds() {
 	return nodes;
 }
 
-vector<Component*>* GameNode::GetComponents() {
-	return components;
-}
-
 GameNode * GameNode::GetNode(int index) {
 	if (index >= nodes->size())
 		return nodes->at(nodes->size() - 1);
 	return nodes->at(index);
 }
 
-void GameNode::Update() {
-	for (vector<Component*>::iterator it = components->begin(); it != components->end(); ++it) {
-		(*it)->Update();
-	}
+Component * GameNode::GetComponent(int index) {
+	if (index > components->size())
+		return components->at(components->size() - 1);
+	return components->at(index);
+}
 
-	for (vector<GameNode*>::iterator it = nodes->begin(); it != nodes->end(); ++it) {
-		(*it)->Update();
+Component * GameNode::GetComponent(ComponentsType type) {
+	for (size_t i = 0; i < components->size(); i++) {
+		if (components->at(i)->type == type)
+			return components->at(i);
 	}
 }
 
-void GameNode::Draw() {
-	//me guardo la MVP anterior
-	glm::mat4 actualWM = renderer->GetWorldMatrix();
-	glm::mat4 actualVM = renderer->GetViewMatrix();
-	glm::mat4 actualPM = renderer->GetProjectionMatrix();
-
-	//multiplico
-	renderer->SetWorldMatrix(actualWM * worldMatrix);
-
-	for (vector<Component*>::iterator it = components->begin(); it != components->end(); ++it) {
-		(*it)->Draw();
-	}
-	for (vector<GameNode*>::iterator it = nodes->begin(); it != nodes->end(); ++it) {
-		(*it)->Draw();
-	}
-
-	//las vuelvo a setear
-	renderer->SetViewMatrix(actualVM);
-	renderer->SetWorldMatrix(actualWM);
-	renderer->SetProjectionMatrix(actualPM);
+vector<Component*>* GameNode::GetComponents() {
+	return components;
 }
