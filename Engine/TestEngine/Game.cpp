@@ -19,32 +19,29 @@ bool Game::OnStart() {
 	mat3 = new Material();
 	unsigned int tileID = mat3->LoadShaders("VertexTexture.glsl", "FragmentTexture.glsl");*/
 
+	sceneNode = new GameNode(renderer);															// Creo el Nodo Padre que va a contener todo
+	snFirstChild = new GameNode(renderer);														// Creo un Nodo hijo del Nodo Padre
+	snSecondChild = new GameNode(renderer);														// Creo un Nodo hijo del Nodo Padre
+	scFirstChild = new GameNode(renderer);														// Creo un Nodo hijo del Segundo hijo del Nodo Padre
+	scSecondChild = new GameNode(renderer);														// Creo un Nodo hijo del Segundo hijo del Nodo Padre
 
-	/*Nodos*/
-	sceneNode = new GameNode(renderer);
-	cameraNode = new GameNode(renderer);
-	firstNode = new GameNode(renderer);
-	secondNode = new GameNode(renderer);
+	sceneNode->AddChild(snFirstChild);															// Le agrego un hijo al Nodo Padre
+	sceneNode->AddChild(snSecondChild);															// Le agrego un hijo al Nodo Padre
+	snSecondChild->AddChild(scFirstChild);														// Le agrego un hijo al segundo hijo del Nodo Padre
+	snSecondChild->AddChild(scSecondChild);														// Le agrego un hijo al segundo hijo del Nodo Padre
 
-	/* Jerarquia de Nodos*/
-	sceneNode->AddChild(cameraNode);
-	sceneNode->AddChild(firstNode);
-	firstNode->AddChild(secondNode);
+	snFirstChild->AddComponent(camera);															// Le agrego un componente de camara al primer hijo del Nodo Padre
 
-
-
-	/*cargo los modelos*/
-	cameraNode->AddComponent(camera);
-	Importer::LoadMesh("sword.fbx", "sword.bmp", secondNode, renderer, camera);
-	//Importer::LoadMesh("car.fbx", "car.bmp", secondNode, renderer, camera);
-	//Importer::LoadMesh("weapon3.fbx", "weapon3.bmp", secondNode, renderer, camera);
+	Importer::LoadMesh("glock.fbx", "glock.bmp", scFirstChild, renderer, camera);				// Cargo el modelo
+	Importer::LoadMesh("sword.fbx", "sword.bmp", scSecondChild, renderer, camera);				// Cargo el modelo
 	
-	/*seteo la escala y posicion*/
+	scFirstChild->SetScale(0.5f, 0.5f, 0.5f);
+	scFirstChild->SetPos(0.0f, 0.0f, 20.0f);
 
-	secondNode->SetScale(0.1f, 0.1f, 0.1f);
-	//secondNode->SetPos(10, 0, 0);
+	scSecondChild->SetPos(4.0f, 0.0f, 60.0f);
+	scSecondChild->Rotate(2.0f, 0.0f, 0.0f);
 
-	SetSceneNode(sceneNode);
+	SetSceneNode(sceneNode);																	// Seteo que es el Nodo Padre
 
 	cout<<"Game::OnStart()"<<endl;
 	return true;
@@ -57,10 +54,10 @@ bool Game::OnUpdate() {																			// Toda la logica va aca
 	speed = 1.0f;
 
 	/* NODES */
-	secondNode->GetNode(1)->Rotate(0, time, 0);
-	//secondNode->GetNode(1)->SetRotY(sceneNode->GetNode(1)->GetRot().y + time * speed); //REVISAR
-
-	//secondNode->Rotate(time,0.0f,0.0f);
+	scFirstChild->GetNode(3)->Rotate(0, time, 0);
+	scFirstChild->GetNode(4)->Rotate(0, -time, 0);
+	scFirstChild->GetNode(5)->Rotate(0, time, 0);
+	scFirstChild->GetNode(6)->Rotate(0, 0, time);
 
 
 	/* MOVIMIENTO CAMARA */
@@ -93,9 +90,10 @@ bool Game::OnUpdate() {																			// Toda la logica va aca
 
 bool Game::OnStop() {
 	delete sceneNode;
-	delete cameraNode;
-	delete firstNode;
-	delete secondNode;
+	delete snFirstChild;
+	delete snSecondChild;
+	delete scFirstChild;
+	delete scSecondChild;
 
 	delete camera;
 	cout << "Game::OnStop()" << endl;

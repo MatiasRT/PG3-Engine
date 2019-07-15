@@ -25,9 +25,12 @@ class Game : public Gamebase {
 	Mesh * mesh2;
 
 	GameNode * sceneNode;
-	GameNode * cameraNode;
-	GameNode * firstNode;
-	GameNode * secondNode;
+
+	GameNode * snFirstChild;
+	GameNode * snSecondChild;
+
+	GameNode * scFirstChild;
+	GameNode * scSecondChild;
 
 	Camera * camera;
 public:
