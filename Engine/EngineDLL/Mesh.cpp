@@ -1,7 +1,10 @@
 #include "Mesh.h"
 
-Mesh::Mesh(Renderer * renderer, const char * txtFile) : Component(renderer) {
+Mesh::Mesh(Renderer * renderer, const char * txtFile, Camera * cam) : Component(renderer) {
 	type = ComponentsType::MeshRenderType;
+	camera = cam;
+	collider = new Collider(renderer);
+
 	textureFile = txtFile;
 	meshInfo = new MeshInfo;
 	meshData = new MeshData();
@@ -22,6 +25,7 @@ Mesh::~Mesh() {
 	delete meshInfo->material;
 	delete meshInfo;
 	delete meshData;
+	delete collider;
 }
 
 void Mesh::SetMeshData(MeshData * meshD) {
@@ -67,19 +71,20 @@ void Mesh::SetMeshData(MeshData * meshD) {
 }
 
 void Mesh::Draw() {
-	
-	if (meshInfo->material != NULL) {
-		meshInfo->material->Bind();
-		meshInfo->material->SetMatrixProperty(renderer->GetWVP());
+	if (camera->BoxInFrustum(collider) == CameraStates::In) {
+		if (meshInfo->material != NULL) {
+			meshInfo->material->Bind();
+			meshInfo->material->SetMatrixProperty(renderer->GetWVP());
+		}
+		renderer->BindTexture(meshInfo->textureId, meshInfo->textureBufferId);
+		renderer->BeginDraw(0);																									// Le decimos al renderer que comience a dibujar
+		renderer->BeginDraw(1);
+		renderer->BindBuffer(meshInfo->bufferId, 0);																			// Unimos el buffer con el buffer binding point
+		renderer->BindBuffer(1, meshInfo->textureBufferId, 2);
+		renderer->DrawElementBuffer(meshInfo->idxCount, meshInfo->indexBufferId);												// El renderer dibuja el triangulo
+		renderer->EndDraw(0);																									// Deja de dibujar
+		renderer->EndDraw(1);
 	}
-	renderer->BindTexture(meshInfo->textureId, meshInfo->textureBufferId);
-	renderer->BeginDraw(0);																									// Le decimos al renderer que comience a dibujar
-	renderer->BeginDraw(1);
-	renderer->BindBuffer(meshInfo->bufferId, 0);																			// Unimos el buffer con el buffer binding point
-	renderer->BindBuffer(1, meshInfo->textureBufferId, 2);
-	renderer->DrawElementBuffer(meshInfo->idxCount, meshInfo->indexBufferId);												// El renderer dibuja el triangulo
-	renderer->EndDraw(0);																									// Deja de dibujar
-	renderer->EndDraw(1);
 }
 
 void Mesh::DisposeVertices() {

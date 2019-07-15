@@ -4,6 +4,7 @@
 #include "Exports.h"
 #include "Definitions.h"
 #include "GameNode.h"
+#include "Camera.h"
 #include <fstream>
 #include <vector>
 #include "assimp/Importer.hpp"
@@ -22,14 +23,16 @@ struct Header {
 
 static class ENGINEDLL_API Importer {
 	
-	static void InitMesh(const aiMesh* paiMesh, Mesh* mesh);
-	static void ProcessNodes(const char* txtFile, GameNode* father, aiNode* node, const aiScene* scene, Renderer* renderer);
+	static void InitMesh(const aiMesh* paiMesh, Mesh* mesh, glm::vec3 &mins, glm::vec3 &maxs);
+	static void ProcessNodes(const char* txtFile, GameNode* father, 
+		aiNode* node, const aiScene* scene, Renderer* renderer,
+		glm::vec3 &mins, glm::vec3 &maxs, Camera * cam);
 
 public:
 
 	static Header LoadBMP(const char * name);
 	static bool CheckFormat(const char * name, unsigned char header[], FILE * file);
 
-	static void LoadMesh(const char * fbxFile, const char * txtFile, GameNode * father, Renderer * renderer);
+	static void LoadMesh(const char * fbxFile, const char * txtFile, GameNode * father, Renderer * renderer, Camera * cam);
 };
 #endif

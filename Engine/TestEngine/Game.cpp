@@ -36,28 +36,28 @@ bool Game::OnStart() {
 	mesh2->SetPos(-10, 0, 20);
 	*/
 
-	/*nodes*/
+	/*Nodos*/
 	sceneNode = new GameNode(renderer);
 	cameraNode = new GameNode(renderer);
 	firstNode = new GameNode(renderer);
 	secondNode = new GameNode(renderer);
 
-	cameraNode->AddComponent(camera);
-
+	/* Jerarquia de Nodos*/
 	sceneNode->AddChild(cameraNode);
 	sceneNode->AddChild(firstNode);
-	//theHijo = new Node(render);
-	/*creo la jerarquia*/
 	firstNode->AddChild(secondNode);
-	//thePadre->addChild(theHijo);
+
+
+
 	/*cargo los modelos*/
-	Importer::LoadMesh("sword.fbx", "sword.bmp", secondNode, renderer);
-	//Importer::LoadMesh("Arma2.fbx", "ArmaTex2.bmp", theHijo, render);
+	cameraNode->AddComponent(camera);
+	Importer::LoadMesh("sword.fbx", "sword.bmp", secondNode, renderer, camera);
+	//Importer::LoadMesh("weapon3.fbx", "weapon3.bmp", secondNode, renderer, camera);
+	
 	/*seteo la escala y posicion*/
 
-	//thePadre->SetScale(0.05f, 0.05f, 0.05f);
-	//theHijo->SetScale(15, 15, 15);
-	//thePadre->SetPos(0, 0, -10);
+	//secondNode->SetScale(1.0f, 1.0f, 1.0f);
+	//secondNode->SetPos(10, 0, 0);
 
 	SetSceneNode(sceneNode);
 
@@ -70,6 +70,12 @@ bool Game::OnUpdate() {																			// Toda la logica va aca
 	//CollisionManager::Instance()->BoxCollisionDetector();
 	input->PollEvents();
 	speed = 1.0f;
+
+	/* NODES */
+	//secondNode->GetNode(1)->SetRotY(speed * time);
+	//secondNode->GetNode(1)->SetRotY(sceneNode->GetNode(1)->GetRot().y + time * speed); //REVISAR
+
+	//secondNode->SetRotX(speed * time);
 
 	/* TILES */
 	//tile->UpdateTilemap();

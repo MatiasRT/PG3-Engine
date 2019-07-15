@@ -26,6 +26,11 @@ enum CameraType {
 	perspective
 };
 
+enum CameraStates {
+	In,
+	Out
+};
+
 struct MeshData {
 	std::vector<float>* vertices;
 	std::vector<unsigned int>* indices;

@@ -55,7 +55,7 @@ bool Importer::CheckFormat(const char * name, unsigned char header[], FILE * fil
 
 }
 
-void Importer::LoadMesh(const char * fbxFile, const char * txtFile, GameNode * father, Renderer * renderer) {
+void Importer::LoadMesh(const char * fbxFile, const char * txtFile, GameNode * father, Renderer * renderer, Camera * cam) {
 	// Create an instance of the Importer class
 	Assimp::Importer importer;
 	// And have it read the given file with some example postprocessing
@@ -66,23 +66,44 @@ void Importer::LoadMesh(const char * fbxFile, const char * txtFile, GameNode * f
 	if (!pScene) 
 		printf("Error parsing '%s': '%s'\n", fbxFile, importer.GetErrorString());
 	
-	ProcessNodes(txtFile, father, pScene->mRootNode, pScene, renderer);
+	glm::vec3 mins = glm::vec3(0, 0, 0);
+	glm::vec3 maxs = glm::vec3(0, 0, 0);
+
+	ProcessNodes(txtFile, father, pScene->mRootNode, pScene, renderer, mins, maxs, cam);
+
+	glm::vec3 bbVertices[8] = {
+		glm::vec3(mins.x, mins.y, mins.z),
+		glm::vec3(mins.x, maxs.y, mins.z),
+		glm::vec3(mins.x, mins.y, maxs.z),
+		glm::vec3(mins.x, maxs.y, maxs.z),
+		glm::vec3(maxs.x, mins.y, mins.z),
+		glm::vec3(maxs.x, maxs.y, mins.z),
+		glm::vec3(maxs.x, mins.y, maxs.z),
+		glm::vec3(maxs.x, maxs.y, maxs.z)
+	};
+
+	if (father->GetNode(0)->GetComponent(ComponentsType::MeshRenderType) != nullptr) {
+		((Mesh*)father->GetNode(0)->GetComponent(ComponentsType::MeshRenderType))->collider->SetVertices(bbVertices);
+	}
 }
 
-void Importer::ProcessNodes(const char * txtFile, GameNode* father, aiNode* node, const aiScene* scene, Renderer* renderer) {
+void Importer::ProcessNodes(const char * txtFile, GameNode* father, aiNode* node, const aiScene* scene, 
+	Renderer* renderer, glm::vec3 &mins, glm::vec3 &maxs, Camera * cam) {
+
 	for (int i = 0; i < (int)node->mNumMeshes; i++) {
-		Mesh * mesh = new Mesh(renderer, txtFile);
-		InitMesh(scene->mMeshes[node->mMeshes[i]], mesh);
+
+		Mesh * mesh = new Mesh(renderer, txtFile, cam);
+		InitMesh(scene->mMeshes[node->mMeshes[i]], mesh, mins, maxs);
 		GameNode * child = new GameNode(renderer);
 		child->AddComponent((Component*)mesh);
 		father->AddChild(child);
 	}
 
 	for (int i = 0; i < (int)node->mNumChildren; i++) 
-		ProcessNodes(txtFile, father, node->mChildren[i], scene, renderer);
+		ProcessNodes(txtFile, father, node->mChildren[i], scene, renderer, mins, maxs, cam);
 }
 
-void Importer::InitMesh(const aiMesh* paiMesh, Mesh * mesh) {
+void Importer::InitMesh(const aiMesh* paiMesh, Mesh * mesh, glm::vec3 &mins, glm::vec3 &maxs) {
 	MeshData * meshD = mesh->GetMeshData();
 	meshD->vertices = new std::vector<float>();
 	meshD->textures = new std::vector<float>();
@@ -94,6 +115,19 @@ void Importer::InitMesh(const aiMesh* paiMesh, Mesh * mesh) {
 		const aiVector3D* pPos = &(paiMesh->mVertices[i]);
 		const aiVector3D* pNormal = &(paiMesh->mNormals[i]);
 		const aiVector3D* pTexCoord = paiMesh->HasTextureCoords(0) ? &(paiMesh->mTextureCoords[0][i]) : &Zero3D;
+
+		if (pPos->x < mins.x)
+			mins.x = pPos->x;
+		if (pPos->x > maxs.x)
+			maxs.x = pPos->x;
+		if (pPos->y < mins.y)
+			mins.y = pPos->y;
+		if (pPos->y > maxs.y)
+			maxs.y = pPos->y;
+		if (pPos->z < mins.z)
+			mins.z = pPos->z;
+		if (pPos->z > maxs.z)
+			maxs.z = pPos->z;
 
 		meshD->vertices->push_back(pPos->y);				// Cargo el vector de vertices con los vertices del mesh
 		meshD->vertices->push_back(pPos->x);

@@ -3,6 +3,8 @@
 #include "Importer.h"
 #include "Component.h"
 #include "GameNode.h"
+#include "Collider.h"
+#include "Camera.h"
 
 struct MeshInfo {
 	unsigned int bufferId;
@@ -26,21 +28,24 @@ class ENGINEDLL_API Mesh : public Component {
 	Header header;
 
 	unsigned int textureId;
+	const char* textureFile;
 
 	MeshInfo* meshInfo;
-	const char* textureFile;
 	MeshData* meshData;
+
+	Camera * camera;
 
 	void DisposeVertices();
 	void DisposeIndices();
 	void DisposeTexture();
 public:
-	Mesh(Renderer * renderer, const char* txtFile);
+	Mesh(Renderer* renderer, const char* txtFile, Camera * cam);
 	~Mesh();
 
 	void SetMeshData(MeshData * meshD);
 	void Draw() override;
 	
-	MeshData * GetMeshData() { return meshData; };
+	MeshData* GetMeshData() { return meshData; };
+	Collider* collider;
 };
 #endif
