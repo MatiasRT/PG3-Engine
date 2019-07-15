@@ -90,31 +90,31 @@ void Camera::Roll(float zAxis) {
 }
 
 void Camera::SetCamInternals() {
-	// compute width and height of the near and far plane sections
+	// Compute width and height of the near and far plane sections
 	tang = glm::tan(angle * 0.5f);
 	nearHeight = nearDistance * tang;
 	nearWidth = nearHeight * ratio;
-	/*farHeight = farDistance * tang;
-	farWidth = farHeight * ratio;*/
 }
 
 void Camera::SetCamDef() {
 	glm::vec3 rightV = (glm::vec3)right;
 	glm::vec3 upV = (glm::vec3)up;
 
+	// Compute the centers of the near and far planes
 	glm::vec3 nearCenter = (glm::vec3)pos + (glm::vec3)forward * nearDistance;
 	glm::vec3 farCenter = (glm::vec3)pos + (glm::vec3)forward * farDistance;
 
+	// Compute the 4 corners of the frustum on the near plane and far plane
 	glm::vec3 leftPlaneVec = (nearCenter - rightV * nearWidth) - (glm::vec3)pos;
 	glm::vec3 rightPlaneVec = (nearCenter + rightV * nearWidth) - (glm::vec3)pos;
 	glm::vec3 topPlaneVec = (nearCenter + upV * nearHeight) - (glm::vec3)pos;
 	glm::vec3 bottomPlaneVec = (nearCenter - upV * nearHeight) - (glm::vec3)pos;
-
 	glm::vec3 normalLeft = glm::normalize(glm::cross(leftPlaneVec, upV));
 	glm::vec3 normalRight = -glm::normalize(glm::cross(rightPlaneVec, upV));
 	glm::vec3 normalTop = glm::normalize(glm::cross(topPlaneVec, rightV));
 	glm::vec3 normalBottom = -glm::normalize(glm::cross(bottomPlaneVec, rightV));
 
+	// Compute the six planes
 	plane[Near] = GeneratePlane(-(glm::vec3)forward, nearCenter);
 	plane[Far] = GeneratePlane((glm::vec3)forward, farCenter);
 	plane[Left] = GeneratePlane(normalLeft, (glm::vec3)pos);
@@ -123,7 +123,7 @@ void Camera::SetCamDef() {
 	plane[Bottom] = GeneratePlane(normalBottom, (glm::vec3)pos);
 }
 
-glm::vec4 Camera::GeneratePlane(glm::vec3 normal, glm::vec3 point) {
+glm::vec4 Camera::GeneratePlane(glm::vec3 normal, glm::vec3 point) {			// Genero los planos
 	glm::vec4 plane;
 
 	plane.x = normal.x;
@@ -134,31 +134,31 @@ glm::vec4 Camera::GeneratePlane(glm::vec3 normal, glm::vec3 point) {
 	return plane;
 }
 
-int Camera::BoxInFrustum(Collider * collier) {
+int Camera::BoxInFrustum(Collider * collider) {
 	bool inside = true;
 	bool outside = false;
+	int corners = 8;
 
-	for (int i = 0; i < (int)Planes::Count; i++) {
+	for (int i = 0; i < (int)Planes::Count; i++) {								// Este loop se ejecuta por cada plano
 		outside = false;
 
-		for (int j = 0; j < 8; j++) {
-			glm::vec3 vertexPosition = collier->GetVertices(j);
-			glm::vec3 planeNormal = glm::vec3(plane[i]);
+		for (int j = 0; j < corners; j++) {										// Este loop se ejecuta por cada corner
+			glm::vec3 vertexPosition = collider->GetVertices(j);				// Me guardo la posicion de un vertice
+			glm::vec3 planeNormal = glm::vec3(plane[i]);						// Me guardo la normal del plano
 
-			float dist = glm::dot(planeNormal, vertexPosition) + plane[i].w;
+			float dist = glm::dot(planeNormal, vertexPosition) + plane[i].w;	// Obtengo la distancia entre el plano y el vertice para determinar si esta adentro del frustum
 			if (dist < 0.0f)
 				break;
-			if (j == 7)
+			if (j == (corners - 1))
 				outside = true;
 		}
-		if (outside)
-		{
+		if (outside) {
 			inside = false;
 			break;
 		}
 	}
 	if (inside)
-		return CameraStates::In;
+		return CameraStates::In;												// Esta adentro del frustum
 	else
-		return CameraStates::Out;
+		return CameraStates::Out;												// Esta afuera del frustum
 }

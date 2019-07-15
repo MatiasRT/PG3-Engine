@@ -46,8 +46,6 @@ class ENGINEDLL_API Camera : public Component {
 
 	float nearWidth;
 	float nearHeight;
-	/*float farWidth;
-	float farHeight;*/
 
 public:
 	Camera(Renderer * render);

@@ -4,12 +4,12 @@ Collider::Collider(Renderer * render) {
 	renderer = render;
 }
 
-glm::vec3 Collider::GetVertices(int index) {
-	glm::vec4 globalRotatedPos(collider[index].x, collider[index].y, collider[index].z, 1.0f);
+glm::vec3 Collider::GetVertices(int index) {													// Obtengo los puntos del collider segun la posicion global
+	glm::vec4 globalRotPosition(collider[index].x, collider[index].y, collider[index].z, 1.0f);			
 
-	globalRotatedPos = renderer->GetWorldMatrix() * globalRotatedPos;
+	globalRotPosition = renderer->GetWorldMatrix() * globalRotPosition;									
 
-	return (glm::vec3)globalRotatedPos;
+	return (glm::vec3)globalRotPosition;																
 }
 
 void Collider::SetVertices(glm::vec3 col[8]) {
