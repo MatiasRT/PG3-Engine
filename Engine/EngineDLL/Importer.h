@@ -23,10 +23,11 @@ struct Header {
 
 static class ENGINEDLL_API Importer {
 	
-	static void InitMesh(const aiMesh* paiMesh, Mesh* mesh, glm::vec3 &mins, glm::vec3 &maxs);
+	static void InitMesh(const aiMesh* paiMesh, Mesh* mesh, glm::vec3 &minimumPoints, glm::vec3 &maximusPoints);
 	static void ProcessNodes(const char* txtFile, GameNode* father, 
 		aiNode* node, const aiScene* scene, Renderer* renderer,
-		glm::vec3 &mins, glm::vec3 &maxs, Camera * cam);
+		glm::vec3 &minimumPoints, glm::vec3 &maximusPoints, Camera * cam);
+	static void CreateColliderVertices(GameNode* father, glm::vec3 minimumPoints, glm::vec3 maximusPoints);
 
 public:
 

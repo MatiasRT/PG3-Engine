@@ -8,8 +8,10 @@
 #include "Component.h"
 #include "Collider.h"
 
-/* ESTE CODIGO FUE HECHO EN BASE A ESTA PAGINA */
-/* http://www.lighthouse3d.com/tutorials/view-frustum-culling/ */
+/****************************************************************/
+/* ESTE CODIGO FUE HECHO EN BASE A ESTA PAGINA					*/
+/* http://www.lighthouse3d.com/tutorials/view-frustum-culling/  */
+/****************************************************************/
 
 using namespace std;
 class ENGINEDLL_API Camera : public Component {

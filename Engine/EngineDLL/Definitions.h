@@ -38,10 +38,7 @@ struct MeshData {
 };
 
 enum ComponentsType {
-	MeshRenderType = 0,
+	MeshType = 0,
 	CamerasType,
-	ColliderType,
-	ScriptType,
-	TransformType,
 	NullComponentType
 };

@@ -1,5 +1,10 @@
 #include "Camera.h"
 
+/****************************************************************/
+/* ESTE CODIGO FUE HECHO EN BASE A ESTA PAGINA					*/
+/* http://www.lighthouse3d.com/tutorials/view-frustum-culling/  */
+/****************************************************************/
+
 Camera::Camera(Renderer * render) : Component(renderer){
 	type: ComponentsType::CamerasType;
 
@@ -133,12 +138,10 @@ int Camera::BoxInFrustum(Collider * collier) {
 	bool inside = true;
 	bool outside = false;
 
-	for (int i = 0; i < (int)Planes::Count; i++)
-	{
+	for (int i = 0; i < (int)Planes::Count; i++) {
 		outside = false;
 
-		for (int j = 0; j < 8; j++)
-		{
+		for (int j = 0; j < 8; j++) {
 			glm::vec3 vertexPosition = collier->GetVertices(j);
 			glm::vec3 planeNormal = glm::vec3(plane[i]);
 
