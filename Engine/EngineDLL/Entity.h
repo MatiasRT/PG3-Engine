@@ -17,6 +17,7 @@ protected:
 	glm::mat4 worldMatrix;
 	glm::mat4 translateMatrix;
 	glm::mat4 scaleMatrix;
+	glm::mat4 rotMatrix;
 	glm::mat4 rotationX;
 	glm::mat4 rotationY;
 	glm::mat4 rotationZ;
@@ -31,6 +32,7 @@ public:
 	void SetRotX(float x);
 	void SetRotY(float y);
 	void SetRotZ(float z);
+	void Rotate(float x, float y, float z);
 	void TranslationBox(float x, float y, float z);
 	void TranslationCircle(float x, float y, float z);
 	void SetBoundingBox(float w, float h, float mass, bool setStatic, bool setTrigger);

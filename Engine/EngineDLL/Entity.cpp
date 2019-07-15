@@ -7,12 +7,13 @@ Entity::Entity(Renderer* rendererPTR) {
 	worldMatrix = glm::mat4(1.0f);															// Identidad
 	translateMatrix = glm::mat4(1.0f);														// Translacion
 	scaleMatrix = glm::mat4(1.0f);															// Escala
+	rotMatrix = glm::mat4(1.0f);															// Rotacion
 	rotationX = glm::mat4(1.0f);															// Rotacion en X
 	rotationY = glm::mat4(1.0f);															// Rotacion en Y
 	rotationZ = glm::mat4(1.0f);															// Rotacion en Z
-	v3pos = glm::vec3(0.0f, 0.0f, 0.0f);													// Inicializacion de la posicion
-	v3scale = glm::vec3(1.0f, 1.0f, 0.0f);													// Inicializacion de la escala
-	v3rot = glm::vec3(0.0f, 0.0f, 0.0f);													// Inicializacion de la rotacion
+	v3pos[0] = v3pos[1] = v3pos[2] = 0.0f;													// Inicializacion de la posicion
+	v3rot[0] = v3rot[1] = v3rot[2] = 0.0f;													// Inicializacion de la rotacion
+	v3scale[0] = v3scale[1] = v3scale[2] = 1.0f;											// Inicializacion de la escala
 }
 
 void Entity::SetPos(float x, float y, float z) {
@@ -47,7 +48,7 @@ void Entity::SetScale(float x, float y, float z) {
 	v3scale[1] = y;
 	v3scale[2] = z;
 
-	scaleMatrix = glm::scale(glm::mat4(1.0f), v3pos);
+	scaleMatrix = glm::scale(glm::mat4(1.0f), v3scale);
 	UpdateWorldMatrix();
 }
 
@@ -83,6 +84,18 @@ void Entity::SetRotZ(float z) {
 	axis[2] = 1.0f;
 
 	rotationZ = glm::rotate(glm::mat4(1.0f), z, axis);
+
+	UpdateWorldMatrix();
+}
+
+void Entity::Rotate(float x, float y, float z) {
+	v3rot[0] += x;
+	v3rot[1] += y;
+	v3rot[2] += z;
+
+	rotMatrix = glm::rotate(glm::mat4(1.0f), v3rot[0], glm::vec3(1.0f, 0.0f, 0.0f));
+	rotMatrix *= glm::rotate(glm::mat4(1.0f), v3rot[1], glm::vec3(0.0f, 1.0f, 0.0f));
+	rotMatrix *= glm::rotate(glm::mat4(1.0f), v3rot[2], glm::vec3(0.0f, 0.0f, 1.0f));
 
 	UpdateWorldMatrix();
 }
@@ -130,5 +143,5 @@ void Entity::SetBoundingCircle(float r, float mass, bool setStatic, bool setTrig
 }
 
 void Entity::UpdateWorldMatrix() {
-	worldMatrix = (translateMatrix * rotationX * rotationY * rotationZ * scaleMatrix);
+	worldMatrix = translateMatrix * rotMatrix * scaleMatrix;								// Multiplico las matrices luego de hacerles transformaciones
 }
