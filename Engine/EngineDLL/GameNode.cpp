@@ -78,19 +78,9 @@ GameNode * GameNode::GetNode(int index) {
 	return nodes->at(index);
 }
 
-Component * GameNode::GetComponent(int index) {
-	if (index > components->size())
-		return components->at(components->size() - 1);
-	return components->at(index);
-}
-
 Component * GameNode::GetComponent(ComponentsType type) {
 	for (size_t i = 0; i < components->size(); i++) {
 		if (components->at(i)->type == type)
 			return components->at(i);
 	}
-}
-
-vector<Component*>* GameNode::GetComponents() {
-	return components;
 }

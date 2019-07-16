@@ -117,8 +117,8 @@ void Importer::InitMesh(const aiMesh* paiMesh, Mesh * mesh, glm::vec3 &minimumPo
 		if (pPos->z > maximusPoints.z)
 			maximusPoints.z = pPos->z;		// Maximo en z
 
-		meshD->vertices->push_back(pPos->y);																		// Cargo el vector de vertices con los vertices del mesh
-		meshD->vertices->push_back(pPos->x);
+		meshD->vertices->push_back(pPos->x);																		// Cargo el vector de vertices con los vertices del mesh
+		meshD->vertices->push_back(pPos->y);
 		meshD->vertices->push_back(pPos->z);
 
 		meshD->textures->push_back(pTexCoord->x);																	// Cargo el vector de tecturas con coordenadas de texturas del mesh

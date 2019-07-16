@@ -29,8 +29,6 @@ public:
 	vector<GameNode*>* GetChilds();
 
 	GameNode * GetNode(int index);
-	Component* GetComponent(int index);
 	Component* GetComponent(ComponentsType type);
-	vector<Component*>* GetComponents();
 };
 #endif

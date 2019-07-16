@@ -39,7 +39,7 @@ bool Game::OnStart() {
 	scFirstChild->SetPos(0.0f, 0.0f, 20.0f);
 
 	scSecondChild->SetPos(4.0f, 0.0f, 60.0f);
-	scSecondChild->Rotate(2.0f, 0.0f, 0.0f);
+	scSecondChild->Rotate(0.0f, 2.0f, 0.0f);
 
 	SetSceneNode(sceneNode);																	// Seteo que es el Nodo Padre
 
@@ -51,13 +51,14 @@ bool Game::OnUpdate() {																			// Toda la logica va aca
 	Input* input = Input::Instance();
 	//CollisionManager::Instance()->BoxCollisionDetector();
 	input->PollEvents();
-	speed = 1.0f;
+	speed = 0.2f;
 
-	/* NODES */
-	scFirstChild->GetNode(3)->Rotate(0, time, 0);
-	scFirstChild->GetNode(4)->Rotate(0, -time, 0);
-	scFirstChild->GetNode(5)->Rotate(0, time, 0);
-	scFirstChild->GetNode(6)->Rotate(0, 0, time);
+	/* NODOS */
+	scFirstChild->Rotate(0, time * speed, 0);													// Rotacion de todo el modelo de la pistola con las balas y el cargador
+	scFirstChild->GetNode(3)->Rotate(time, 0, 0);												// Rotacion del cargador
+	scFirstChild->GetNode(4)->Rotate(time, 0, 0);												// Rotacion de bala n1
+	scFirstChild->GetNode(5)->Rotate(-time, 0, 0);												// Rotacion de bala n2
+	scFirstChild->GetNode(6)->Rotate(0, 0, time);												// Rotacion de bala n3
 
 
 	/* MOVIMIENTO CAMARA */
